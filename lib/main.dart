@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:jdih/pages/artikelhukum_page.dart';
 import 'package:jdih/pages/berita_page.dart';
 import 'package:jdih/pages/galeri_page.dart';
@@ -8,7 +9,11 @@ import 'package:jdih/pages/produkhukum_page.dart';
 import 'package:jdih/pages/putusan_page.dart';
 import 'package:jdih/styles/colors.dart';
 
-void main() => runApp(const App());
+// void main() => runApp(const App());
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
+  runApp(const App());
+}
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -16,7 +21,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'JDIH Provinsi Lampung',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           useMaterial3: true,
