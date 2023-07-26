@@ -65,7 +65,8 @@ class ProdukItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   OutlinedButton(
-                      onPressed: () => context.go('/produkhukum/detail'),
+                      onPressed: () =>
+                          context.go('/produkhukum/detail', extra: data),
                       style: ButtonStyle(
                         side: MaterialStateProperty.all<BorderSide>(
                             const BorderSide(

@@ -30,7 +30,10 @@ final GoRouter _router = GoRouter(
               routes: [
                 GoRoute(
                   path: 'detail',
-                  builder: (context, state) => DetailProdukHukumPage(),
+                  builder: (context, state) {
+                    return DetailProdukHukumPage(
+                        data: state.extra! as List<dynamic>);
+                  },
                 )
               ]),
           GoRoute(

@@ -3,7 +3,9 @@ import 'package:jdih/components/table_detailprodukhukum.dart';
 import 'package:jdih/styles/colors.dart';
 
 class DetailProdukHukumPage extends StatelessWidget {
-  const DetailProdukHukumPage({super.key});
+  const DetailProdukHukumPage({super.key, required this.data});
+
+  final List<dynamic> data;
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +55,9 @@ class DetailProdukHukumPage extends StatelessWidget {
                 ),
                 padding:
                     const EdgeInsets.only(left: 20.0, top: 5.0, bottom: 5.0),
-                child: const Text(
-                  'PERATURAN PEMERINTAH REPUBLIK INDONESIA Nomor 35 Tahun 2023 Tentang KETENTUAN UMUM PAJAK DAERAH DAN RETRIBUSI DAERAH',
-                  style: TextStyle(
+                child: Text(
+                  data[0].judul,
+                  style: const TextStyle(
                       color: AppColors.textColor,
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
@@ -90,9 +92,9 @@ class DetailProdukHukumPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 5),
-              const Text(
-                'Nomor 35 Tahun 2023 Tentang KETENTUAN UMUM PAJAK DAERAH DAN RETRIBUSI DAERAH ini ditetapkan dan diundangkan pada 2023-06-16 di JAKARTA',
-                style: TextStyle(
+              Text(
+                data[0].deskripsi,
+                style: const TextStyle(
                     color: AppColors.textColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
@@ -108,7 +110,9 @@ class DetailProdukHukumPage extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              TableDetailProdukHukum()
+              TableDetailProdukHukum(
+                data: data,
+              )
             ],
           ),
         ),

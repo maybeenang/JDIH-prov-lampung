@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:jdih/styles/colors.dart';
 
 class TableDetailProdukHukum extends StatelessWidget {
-  const TableDetailProdukHukum({super.key});
+  const TableDetailProdukHukum({super.key, required this.data});
+
+  final List<dynamic> data;
 
   @override
   Widget build(BuildContext context) {
@@ -15,24 +17,30 @@ class TableDetailProdukHukum extends StatelessWidget {
       },
       children: [
         tableRow("Abstrak", "Peraturan Pemerintah"),
-        tableRow("Jenis Peraturan", "Peraturan Pemerintah"),
-        tableRow("Judul Peraturan",
-            "PERATURAN PEMERINTAH REPUBLIK INDONESIA No. 35 Tahun 2023 Tentang KETENTUAN UMUM PAJAK DAERAH DAN RETRIBUSI DAERAH"),
-        tableRow("No", "32"),
-        tableRow("Tahun Terbit", "2023"),
-        tableRow("Tanggal Penetapan", "16 Juni 2023"),
-        tableRow("Tanggal Pengundangan", "16 Juni 2023"),
-        tableRow(
-            "T.E.U Badan", "KEMENTERIAN SEKRETARIAT NEGARA REPUBLIK INDONESIA"),
-        tableRow("Sumber", "LNRI2023(85);160halaman"),
-        tableRow("Tempat Terbit", "JAKARTA"),
-        tableRow("Bidang Hukum", "-"),
-        tableRow("Subjek", "-"),
-        tableRow("Bahasa", "Bahasa Indonesia"),
-        tableRow("Lokasi", "Biro Hukum Provinsi Lampung"),
-        tableRow("Status Produk Hukum", "Peraturan Pemerintah"),
+        tableRow("Jenis Peraturan", nullCheck(data[0].jenisPeraturan)),
+        tableRow("Judul Peraturan", nullCheck(data[0].judul)),
+        tableRow("No", nullCheck(data[0].noPeraturan)),
+        tableRow("Tahun Terbit", nullCheck(data[0].tahunTerbit)),
+        tableRow("Tanggal Penetapan", nullCheck(data[0].tanggal)),
+        tableRow("Tanggal Pengundangan", nullCheck(data[0].tanggal)),
+        tableRow("T.E.U Badan", nullCheck(data[0].teuBadan)),
+        tableRow("Sumber", nullCheck(data[0].sumber)),
+        tableRow("Tempat Terbit", nullCheck(data[0].tempatTerbit)),
+        tableRow("Bidang Hukum", nullCheck(data[0].bidangHukum)),
+        tableRow("Subjek", nullCheck(data[0].subjek)),
+        tableRow("Bahasa", nullCheck(data[0].bahasa)),
+        tableRow("Lokasi", nullCheck(data[0].lokasi)),
+        tableRow("Status Produk Hukum", nullCheck(data[0].status)),
       ],
     );
+  }
+
+  String nullCheck(String? word) {
+    if (word == null) {
+      return "-";
+    } else {
+      return word;
+    }
   }
 
   TableRow tableRow(String judul, String isi) {
