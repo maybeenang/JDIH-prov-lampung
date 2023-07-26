@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../styles/colors.dart';
 
@@ -64,9 +65,7 @@ class ProdukItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   OutlinedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/detail');
-                      },
+                      onPressed: () => context.go('/produkhukum/detail'),
                       style: ButtonStyle(
                         side: MaterialStateProperty.all<BorderSide>(
                             const BorderSide(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jdih/pages/artikelhukum_page.dart';
 import 'package:jdih/pages/berita_page.dart';
 import 'package:jdih/pages/detailprodukhukum_page.dart';
@@ -16,29 +17,52 @@ Future<void> main() async {
   runApp(const App());
 }
 
+final GoRouter _router = GoRouter(
+  routes: <RouteBase>[
+    GoRoute(
+        path: '/',
+        builder: (BuildContext context, GoRouterState state) =>
+            const HomePage(),
+        routes: <RouteBase>[
+          GoRoute(
+              path: 'produkhukum',
+              builder: (context, state) => const ProdukHukumPage(),
+              routes: [
+                GoRoute(
+                  path: 'detail',
+                  builder: (context, state) => DetailProdukHukumPage(),
+                )
+              ]),
+          GoRoute(
+              path: 'monografihukum',
+              builder: (context, state) => const MonografiHukumPage()),
+          GoRoute(
+              path: 'putusan',
+              builder: (context, state) => const PutusanPage()),
+          GoRoute(
+              path: 'berita', builder: (context, state) => const BeritaPage()),
+          GoRoute(
+              path: 'artikelhukum',
+              builder: (context, state) => const ArtikelHukumPage()),
+          GoRoute(
+              path: 'galeri', builder: (context, state) => const GaleriPage()),
+        ]),
+  ],
+);
+
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'JDIH Provinsi Lampung',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           useMaterial3: true,
           scaffoldBackgroundColor: AppColors.bgColor,
           appBarTheme: const AppBarTheme(backgroundColor: AppColors.barColor)),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const HomePage(),
-        '/produkhukum': (context) => const ProdukHukumPage(),
-        '/monografihukum': (context) => const MonografiHukumPage(),
-        '/putusan': (context) => const PutusanPage(),
-        '/artikelhukum': (context) => const ArtikelHukumPage(),
-        '/berita': (context) => const BeritaPage(),
-        '/galeri': (context) => const GaleriPage(),
-        '/detail': (context) => const DetailProdukHukumPage(),
-      },
+      routerConfig: _router,
     );
   }
 }

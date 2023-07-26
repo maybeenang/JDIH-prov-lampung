@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../styles/colors.dart';
 
 class MenuIcon extends StatelessWidget {
   const MenuIcon(
-      {super.key, required this.iconPath, required this.title, this.route});
+      {super.key,
+      required this.iconPath,
+      required this.title,
+      required this.route});
   final String iconPath;
   final String title;
-  final String? route;
+  final String route;
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +20,7 @@ class MenuIcon extends StatelessWidget {
       width: 70,
       height: 82,
       child: GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, '/$route');
-        },
+        onTap: () => context.go('/$route'),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

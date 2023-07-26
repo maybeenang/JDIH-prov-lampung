@@ -79,7 +79,10 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
                 ),
               ),
               produkHukum.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                      color: AppColors.textColor,
+                    ))
                   : ListView.separated(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       itemBuilder: (context, index) {
