@@ -65,7 +65,7 @@ class ProdukItem extends StatelessWidget {
                 children: [
                   OutlinedButton(
                       onPressed: () {
-                        // networking.getData();
+                        Navigator.pushNamed(context, '/detail');
                       },
                       style: ButtonStyle(
                         side: MaterialStateProperty.all<BorderSide>(

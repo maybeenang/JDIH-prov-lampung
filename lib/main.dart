@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:jdih/pages/artikelhukum_page.dart';
 import 'package:jdih/pages/berita_page.dart';
+import 'package:jdih/pages/detailprodukhukum_page.dart';
 import 'package:jdih/pages/galeri_page.dart';
 import 'package:jdih/pages/home_page.dart';
 import 'package:jdih/pages/monografihukum_page.dart';
@@ -36,6 +37,7 @@ class App extends StatelessWidget {
         '/artikelhukum': (context) => const ArtikelHukumPage(),
         '/berita': (context) => const BeritaPage(),
         '/galeri': (context) => const GaleriPage(),
+        '/detail': (context) => const DetailProdukHukumPage(),
       },
     );
   }
