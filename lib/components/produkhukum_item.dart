@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+// import 'package:jdih/utils/networking.dart';
 
 import '../styles/colors.dart';
 
 class ProdukItem extends StatelessWidget {
-  const ProdukItem({super.key});
+  const ProdukItem(
+      {super.key, required this.judul, required this.jenisPeraturan});
 
+  final String judul;
+  final String jenisPeraturan;
+
+  // Networking networking = Networking(params: 'produk-hukum/10439');
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,16 +26,16 @@ class ProdukItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'PERATURAN PEMERINTAHAN REPUBLIK INDONESIA Nomor 35 Tahun 2023 Tentang KETENTUAN UMUM PAJAK DAERAH DAN RETRIBUSI DAERAH',
+              Text(
+                judul,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.textColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w700),
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               const Row(
                 children: [
                   Icon(
@@ -44,7 +50,7 @@ class ProdukItem extends StatelessWidget {
                   )
                 ],
               ),
-              const Row(
+              Row(
                 children: [
                   Icon(
                     Icons.folder_open_outlined,
@@ -53,7 +59,7 @@ class ProdukItem extends StatelessWidget {
                   ),
                   SizedBox(width: 5.0),
                   Text(
-                    'PERATURAN PEMERINTAHAN REPUBLIK INDONESIA',
+                    jenisPeraturan,
                     style: TextStyle(fontSize: 10, color: AppColors.textColor),
                   )
                 ],
@@ -63,7 +69,9 @@ class ProdukItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // networking.getData();
+                      },
                       style: ButtonStyle(
                         side: MaterialStateProperty.all<BorderSide>(
                             const BorderSide(

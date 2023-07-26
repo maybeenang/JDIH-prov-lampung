@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jdih/components/produkhukum_item.dart';
 import 'package:jdih/components/search_box_produk.dart';
+import 'package:jdih/models/produkhukum_model.dart';
 import 'package:jdih/styles/colors.dart';
+import 'package:jdih/utils/networking.dart';
 
 class ProdukHukumPage extends StatefulWidget {
   const ProdukHukumPage({super.key});
@@ -11,6 +13,25 @@ class ProdukHukumPage extends StatefulWidget {
 }
 
 class _ProdukHukumPageState extends State<ProdukHukumPage> {
+  List<ProdukHukum> produkHukum = [];
+  Networking networking = Networking(params: 'produk-hukum?page=1050');
+
+  _getData() async {
+    produkHukum = await networking.getData();
+    setState(() {
+      // produkHukum = produkHukum;
+    });
+    // setState(() {
+    //   produkHukum = networking.getData() as List<ProdukHukum>;
+    // });
+  }
+
+  @override
+  void initState() {
+    _getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,19 +83,25 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
                   ],
                 ),
               ),
-              ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemBuilder: (context, index) {
-                    return const ProdukItem();
-                  },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(
-                      height: 20,
-                    );
-                  },
-                  itemCount: 10,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics()),
+              produkHukum.isEmpty
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.separated(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemBuilder: (context, index) {
+                        return ProdukItem(
+                          judul: produkHukum[index].judul.toString(),
+                          jenisPeraturan:
+                              produkHukum[index].jenisPeraturan.toString(),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          height: 20,
+                        );
+                      },
+                      itemCount: produkHukum.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics()),
             ],
           ),
         ));
