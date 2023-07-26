@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-// import 'package:jdih/utils/networking.dart';
 
 import '../styles/colors.dart';
 
 class ProdukItem extends StatelessWidget {
-  const ProdukItem(
-      {super.key, required this.judul, required this.jenisPeraturan});
+  const ProdukItem({super.key, required this.data});
 
-  final String judul;
-  final String jenisPeraturan;
-
-  // Networking networking = Networking(params: 'produk-hukum/10439');
+  final List<dynamic> data;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +22,7 @@ class ProdukItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                judul,
+                data[0].judul,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -36,30 +31,30 @@ class ProdukItem extends StatelessWidget {
                     fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 10.0),
-              const Row(
+              Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.calendar_today,
                     color: AppColors.textColor,
                     size: 14,
                   ),
                   SizedBox(width: 5.0),
                   Text(
-                    '2023',
+                    data[0].tahunTerbit,
                     style: TextStyle(fontSize: 10, color: AppColors.textColor),
                   )
                 ],
               ),
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.folder_open_outlined,
                     color: AppColors.textColor,
                     size: 14,
                   ),
                   SizedBox(width: 5.0),
                   Text(
-                    jenisPeraturan,
+                    data[0].jenisPeraturan,
                     style: TextStyle(fontSize: 10, color: AppColors.textColor),
                   )
                 ],

@@ -14,16 +14,11 @@ class ProdukHukumPage extends StatefulWidget {
 
 class _ProdukHukumPageState extends State<ProdukHukumPage> {
   List<ProdukHukum> produkHukum = [];
-  Networking networking = Networking(params: 'produk-hukum?page=1050');
+  Networking networking = Networking(params: 'produk-hukum?order=DESC');
 
   _getData() async {
     produkHukum = await networking.getData();
-    setState(() {
-      // produkHukum = produkHukum;
-    });
-    // setState(() {
-    //   produkHukum = networking.getData() as List<ProdukHukum>;
-    // });
+    setState(() {});
   }
 
   @override
@@ -89,9 +84,7 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       itemBuilder: (context, index) {
                         return ProdukItem(
-                          judul: produkHukum[index].judul.toString(),
-                          jenisPeraturan:
-                              produkHukum[index].jenisPeraturan.toString(),
+                          data: [produkHukum[index]],
                         );
                       },
                       separatorBuilder: (context, index) {
