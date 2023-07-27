@@ -30,6 +30,7 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
       setState(() {
         produkHukum.addAll(produkHukumTemp);
         print("berhasil get data page $page");
+        isLoading = false;
       });
     } else {
       return;
@@ -45,11 +46,12 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
         if (isLoading) {
           return;
         }
-        isLoading = true;
+        setState(() {
+          isLoading = true;
+        });
         page++;
         networking = Networking(params: 'produk-hukum?page=$page&order=DESC');
         _getData();
-        isLoading = false;
       }
     });
   }
@@ -127,7 +129,7 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
                                 ? const CircularProgressIndicator(
                                     color: AppColors.textColor,
                                   )
-                                : SizedBox(),
+                                : const SizedBox(),
                           );
                         }
                         return ProdukItem(
