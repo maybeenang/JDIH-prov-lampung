@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jdih/components/produkhukum_item.dart';
 import 'package:jdih/components/search_box_produk.dart';
-import 'package:jdih/models/produkhukum_model.dart';
 import 'package:jdih/styles/colors.dart';
 import 'package:jdih/utils/networking.dart';
 
@@ -13,18 +12,53 @@ class ProdukHukumPage extends StatefulWidget {
 }
 
 class _ProdukHukumPageState extends State<ProdukHukumPage> {
-  List<ProdukHukum> produkHukum = [];
-  Networking networking = Networking(params: 'produk-hukum?order=DESC');
+  final _controller = ScrollController();
+  List<dynamic> produkHukum = [];
+  List<dynamic> produkHukumTemp = [];
+  int page = 1;
+
+  bool isLoading = false;
+
+  Networking networking = Networking(params: 'produk-hukum?page=1&order=DESC');
 
   _getData() async {
-    produkHukum = await networking.getData();
-    setState(() {});
+    produkHukumTemp = await networking.getData();
+    if (produkHukumTemp.isEmpty) {
+      return;
+    }
+    if (this.mounted) {
+      setState(() {
+        produkHukum.addAll(produkHukumTemp);
+        print("berhasil get data page $page");
+      });
+    } else {
+      return;
+    }
   }
 
   @override
   void initState() {
     _getData();
     super.initState();
+    _controller.addListener(() {
+      if (_controller.position.pixels == _controller.position.maxScrollExtent) {
+        if (isLoading) {
+          return;
+        }
+        isLoading = true;
+        page++;
+        networking = Networking(params: 'produk-hukum?page=$page&order=DESC');
+        _getData();
+        isLoading = false;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    if (_controller.hasClients) _controller.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -59,6 +93,7 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
           ],
         ),
         body: SingleChildScrollView(
+          controller: _controller,
           child: Column(
             children: [
               const Padding(
@@ -84,8 +119,17 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
                       color: AppColors.textColor,
                     ))
                   : ListView.separated(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.all(20.0),
                       itemBuilder: (context, index) {
+                        if (index == produkHukum.length) {
+                          return Center(
+                            child: isLoading
+                                ? const CircularProgressIndicator(
+                                    color: AppColors.textColor,
+                                  )
+                                : SizedBox(),
+                          );
+                        }
                         return ProdukItem(
                           data: [produkHukum[index]],
                         );
@@ -95,7 +139,7 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
                           height: 20,
                         );
                       },
-                      itemCount: produkHukum.length,
+                      itemCount: produkHukum.length + 1,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics()),
             ],

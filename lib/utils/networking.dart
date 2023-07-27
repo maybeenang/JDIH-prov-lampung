@@ -28,13 +28,14 @@ class Networking {
         }
 
         // print(produkHukum[0].judul);
-        print("Sukses Mengambil data");
+        // print("Sukses Mengambil data");
         return produkHukum;
       } else {
-        print(response.statusCode);
+        return [];
       }
     } catch (e) {
       print(e);
+      return [];
     }
   }
 }
