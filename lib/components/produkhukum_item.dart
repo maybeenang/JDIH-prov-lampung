@@ -84,7 +84,16 @@ class ProdukItem extends StatelessWidget {
                       )),
                   const SizedBox(width: 10.0),
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        final snackbar = SnackBar(
+                          content: const Text('Unduh Dokumen'),
+                          action: SnackBarAction(
+                            label: 'Tutup',
+                            onPressed: () {},
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                      },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateColor.resolveWith(
                             (states) => AppColors.textColor),

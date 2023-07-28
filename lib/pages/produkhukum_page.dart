@@ -29,7 +29,6 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
     if (this.mounted) {
       setState(() {
         produkHukum.addAll(produkHukumTemp);
-        print("berhasil get data page $page");
         isLoading = false;
       });
     } else {

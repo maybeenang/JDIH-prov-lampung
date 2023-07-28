@@ -27,8 +27,6 @@ class Networking {
           produkHukum.add(ProdukHukum.fromJson(item));
         }
 
-        // print(produkHukum[0].judul);
-        // print("Sukses Mengambil data");
         return produkHukum;
       } else {
         return [];
