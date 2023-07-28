@@ -92,6 +92,9 @@ class ProdukItem extends StatelessWidget {
                             onPressed: () {},
                           ),
                         );
+
+                        // if snackbar is not showing
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         ScaffoldMessenger.of(context).showSnackBar(snackbar);
                       },
                       style: ButtonStyle(
