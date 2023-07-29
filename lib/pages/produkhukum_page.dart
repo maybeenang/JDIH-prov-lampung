@@ -40,66 +40,65 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarPage('Produk Hukum', context),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        controller: _scrollController,
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(20.0),
+      body: BlocBuilder<ProdukhukumBloc, ProdukhukumState>(
+        builder: (context, state) {
+          return RefreshIndicator(
+            onRefresh: () {
+              context.read<ProdukhukumBloc>().add(ProdukhukumFetched());
+              return Future.delayed(const Duration(seconds: 1));
+            },
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              controller: _scrollController,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Temukan Produk Hukum',
-                    style: TextStyle(
-                        color: AppColors.textColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500),
+                  const Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Temukan Produk Hukum',
+                          style: TextStyle(
+                              color: AppColors.textColor,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(height: 20.0),
+                        SearchBoxProduk()
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 20.0),
-                  SearchBoxProduk()
+                  loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : ListView.separated(
+                          primary: false,
+                          padding: const EdgeInsets.all(20.0),
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: state.hasReachedMax
+                              ? state.produkHukum.length
+                              : state.produkHukum.length + 1,
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(
+                              height: 20,
+                            );
+                          },
+                          itemBuilder: (context, index) {
+                            return index >= state.produkHukum.length
+                                ? state.status == ProdukhukumStatus.failure
+                                    ? const Center(
+                                        child: Text('failed to fetch data'))
+                                    : const Center(
+                                        child: CircularProgressIndicator())
+                                : ProdukItem(data: [state.produkHukum[index]]);
+                          },
+                        ),
                 ],
               ),
             ),
-            BlocBuilder<ProdukhukumBloc, ProdukhukumState>(
-                builder: (context, state) {
-              switch (state.status) {
-                case ProdukhukumStatus.failure:
-                  return const Center(child: Text('failed to fetch data'));
-                case ProdukhukumStatus.success:
-                  if (state.produkHukum.isEmpty) {
-                    return const Center(child: Text('no data'));
-                  }
-                  if (loading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  return ListView.separated(
-                    primary: false,
-                    padding: const EdgeInsets.all(20.0),
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: state.hasReachedMax
-                        ? state.produkHukum.length
-                        : state.produkHukum.length + 1,
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 20,
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      return index >= state.produkHukum.length
-                          ? const Center(child: CircularProgressIndicator())
-                          : ProdukItem(data: [state.produkHukum[index]]);
-                    },
-                  );
-
-                default:
-                  return const Center();
-              }
-            }),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
