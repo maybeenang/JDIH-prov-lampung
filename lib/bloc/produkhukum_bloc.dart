@@ -41,17 +41,19 @@ class ProdukhukumBloc extends Bloc<ProdukhukumEvent, ProdukhukumState> {
           state.copyWith(
             status: ProdukhukumStatus.success,
             produkHukum: produkHukum,
+            page: state.page + 1,
             hasReachedMax: false,
           ),
         );
       }
 
-      final produkHukum = await _fetchProdukHukum(state.produkHukum.length);
+      final produkHukum = await _fetchProdukHukum();
       emit(produkHukum.isEmpty
           ? state.copyWith(hasReachedMax: true)
           : state.copyWith(
               status: ProdukhukumStatus.success,
               produkHukum: List.of(state.produkHukum)..addAll(produkHukum),
+              page: state.page + 1,
               hasReachedMax: false,
             ));
     } catch (e) {
@@ -60,11 +62,10 @@ class ProdukhukumBloc extends Bloc<ProdukhukumEvent, ProdukhukumState> {
     }
   }
 
-  Future<List<ProdukHukum>> _fetchProdukHukum([int startIndex = 0]) async {
-    startIndex = startIndex + 1;
+  Future<List<ProdukHukum>> _fetchProdukHukum() async {
     final response = await http.get(
         Uri.http(dotenv.env['BASE_URL'].toString(),
-            "produk-hukum?page=$startIndex&order=DESC"),
+            'produk-hukum?page${state.page.toString()}=&order=DESC'),
         headers: {
           'X-AUTHORIZATION': dotenv.env['API_KEY'].toString(),
         });

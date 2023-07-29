@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jdih/bloc/produkhukum_bloc.dart';
 import 'package:jdih/components/appbar_page.dart';
 import 'package:jdih/components/produkhukum_item.dart';
 import 'package:jdih/components/search_box_produk.dart';
 import 'package:jdih/styles/colors.dart';
-import 'package:jdih/utils/networking.dart';
 
 class ProdukHukumPage extends StatefulWidget {
   const ProdukHukumPage({super.key});
@@ -13,113 +14,106 @@ class ProdukHukumPage extends StatefulWidget {
 }
 
 class _ProdukHukumPageState extends State<ProdukHukumPage> {
-  final _controller = ScrollController();
-  List<dynamic> produkHukum = [];
-  List<dynamic> produkHukumTemp = [];
-  int page = 1;
-
-  bool isLoading = false;
-
-  Networking networking = Networking(params: 'produk-hukum?page=1&order=DESC');
-
-  _getData() async {
-    produkHukumTemp = await networking.getData();
-    if (produkHukumTemp.isEmpty) {
-      return;
-    }
-    if (this.mounted) {
-      setState(() {
-        produkHukum.addAll(produkHukumTemp);
-        isLoading = false;
-      });
-    } else {
-      return;
-    }
-  }
+  final _scrollController = ScrollController();
+  bool loading = true;
 
   @override
   void initState() {
-    _getData();
     super.initState();
-    _controller.addListener(() {
-      if (_controller.position.pixels == _controller.position.maxScrollExtent) {
-        if (isLoading) {
-          return;
-        }
-        setState(() {
-          isLoading = true;
-        });
-        page++;
-        networking = Networking(params: 'produk-hukum?page=$page&order=DESC');
-        _getData();
-      }
+    _scrollController.addListener(_onScroll);
+    Future.delayed(const Duration(milliseconds: 500)).then((__) {
+      setState(() {
+        loading = false;
+      });
     });
   }
 
   @override
   void dispose() {
-    if (_controller.hasClients) _controller.dispose();
-
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBarPage('Produk Hukum', context),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          controller: _controller,
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Temukan Produk Hukum',
-                      style: TextStyle(
-                          color: AppColors.textColor,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(height: 20.0),
-                    SearchBoxProduk()
-                  ],
-                ),
+      appBar: appBarPage('Produk Hukum', context),
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        controller: _scrollController,
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Temukan Produk Hukum',
+                    style: TextStyle(
+                        color: AppColors.textColor,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(height: 20.0),
+                  SearchBoxProduk()
+                ],
               ),
-              produkHukum.isEmpty
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                      color: AppColors.textColor,
-                    ))
-                  : ListView.separated(
-                      padding: const EdgeInsets.all(20.0),
-                      itemBuilder: (context, index) {
-                        if (index == produkHukum.length) {
-                          return Center(
-                            child: isLoading
-                                ? const CircularProgressIndicator(
-                                    color: AppColors.textColor,
-                                  )
-                                : const SizedBox(),
-                          );
-                        }
-                        return ProdukItem(
-                          data: [produkHukum[index]],
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return const SizedBox(
-                          height: 20,
-                        );
-                      },
-                      itemCount: produkHukum.length + 1,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics()),
-            ],
-          ),
-        ));
+            ),
+            BlocBuilder<ProdukhukumBloc, ProdukhukumState>(
+                builder: (context, state) {
+              switch (state.status) {
+                case ProdukhukumStatus.failure:
+                  return const Center(child: Text('failed to fetch data'));
+                case ProdukhukumStatus.success:
+                  if (state.produkHukum.isEmpty) {
+                    return const Center(child: Text('no data'));
+                  }
+                  if (loading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return ListView.separated(
+                    primary: false,
+                    padding: const EdgeInsets.all(20.0),
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: state.hasReachedMax
+                        ? state.produkHukum.length
+                        : state.produkHukum.length + 1,
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(
+                        height: 20,
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      return index >= state.produkHukum.length
+                          ? const Center(child: CircularProgressIndicator())
+                          : ProdukItem(data: [state.produkHukum[index]]);
+                    },
+                  );
+
+                default:
+                  return const Center();
+              }
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _onScroll() {
+    if (_isBottom) {
+      context.read<ProdukhukumBloc>().add(ProdukhukumFetched());
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
   }
 }

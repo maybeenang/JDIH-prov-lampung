@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jdih/models/produkhukum_model.dart';
 
 import '../styles/colors.dart';
 
 class ProdukItem extends StatelessWidget {
   const ProdukItem({super.key, required this.data});
 
-  final List<dynamic> data;
+  final List<ProdukHukum> data;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,7 +24,7 @@ class ProdukItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                data[0].judul,
+                data[0].judul!,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -41,7 +42,7 @@ class ProdukItem extends StatelessWidget {
                   ),
                   SizedBox(width: 5.0),
                   Text(
-                    data[0].tahunTerbit,
+                    data[0].tahunTerbit!,
                     style: TextStyle(fontSize: 10, color: AppColors.textColor),
                   )
                 ],
@@ -55,7 +56,7 @@ class ProdukItem extends StatelessWidget {
                   ),
                   SizedBox(width: 5.0),
                   Text(
-                    data[0].jenisPeraturan,
+                    data[0].jenisPeraturan!,
                     style: TextStyle(fontSize: 10, color: AppColors.textColor),
                   )
                 ],
