@@ -1,4 +1,6 @@
-class ProdukHukum {
+import 'package:equatable/equatable.dart';
+
+class ProdukHukum extends Equatable {
   // prod_url_lampiran
   final String? url_lampiran;
 
@@ -94,4 +96,25 @@ class ProdukHukum {
       status: json['prod_status'],
     );
   }
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+        url_lampiran,
+        judul,
+        deskripsi,
+        abstrak,
+        jenisPeraturan,
+        noPeraturan,
+        tahunTerbit,
+        tanggal,
+        teuBadan,
+        sumber,
+        tempatTerbit,
+        bidangHukum,
+        subjek,
+        bahasa,
+        lokasi,
+        status,
+      ];
 }

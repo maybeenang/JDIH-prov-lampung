@@ -45,3 +45,14 @@ app.*.map.json
 
 # .env
 *.env
+
+# ignore windows folder
+windows/
+
+# ignore mac folder
+macos/
+
+# ignore linux folder
+linux/
+
+*.http
