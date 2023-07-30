@@ -17,10 +17,30 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
   final _scrollController = ScrollController();
   bool loading = true;
 
+  SnackBar snackbar(String word) {
+    return SnackBar(
+      content: Text(word),
+      action: SnackBarAction(
+        label: 'Tutup',
+        onPressed: () {},
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
+    _scrollController.addListener(
+      () {
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          if (context.read<ProdukhukumBloc>().state.status !=
+              ProdukhukumStatus.failure) {
+            context.read<ProdukhukumBloc>().add(ProdukhukumFetched());
+          }
+        }
+      },
+    );
     Future.delayed(const Duration(milliseconds: 500)).then((__) {
       setState(() {
         loading = false;
@@ -31,7 +51,7 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
   @override
   void dispose() {
     _scrollController
-      ..removeListener(_onScroll)
+      ..removeListener(() {})
       ..dispose();
     super.dispose();
   }
@@ -40,12 +60,34 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarPage('Produk Hukum', context),
-      body: BlocBuilder<ProdukhukumBloc, ProdukhukumState>(
+      body: BlocConsumer<ProdukhukumBloc, ProdukhukumState>(
+        listener: (context, state) {
+          if (state.status == ProdukhukumStatus.failure) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(snackbar('Gagal memuat data'));
+          }
+
+          if (state.hasReachedMax) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(snackbar('Tidak ada data lagi'));
+          }
+
+          if (state.status == ProdukhukumStatus.initial ||
+              state.status == ProdukhukumStatus.loading) {
+            ScaffoldMessenger.of(context)..hideCurrentSnackBar();
+          }
+        },
         builder: (context, state) {
           return RefreshIndicator(
-            onRefresh: () {
-              context.read<ProdukhukumBloc>().add(ProdukhukumFetched());
-              return Future.delayed(const Duration(seconds: 1));
+            onRefresh: () async {
+              await Future.delayed(const Duration(seconds: 2));
+              context.read<ProdukhukumBloc>().add(
+                    ProdukhukumRefresh(
+                      refreshController: context,
+                    ),
+                  );
             },
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -86,11 +128,13 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
                           },
                           itemBuilder: (context, index) {
                             return index >= state.produkHukum.length
-                                ? state.status == ProdukhukumStatus.failure
+                                ? state.status == ProdukhukumStatus.loading
                                     ? const Center(
-                                        child: Text('failed to fetch data'))
-                                    : const Center(
                                         child: CircularProgressIndicator())
+                                    : state.status == ProdukhukumStatus.failure
+                                        ? const Center(
+                                            child: Text('Gagal memuat data'))
+                                        : const SizedBox()
                                 : ProdukItem(data: [state.produkHukum[index]]);
                           },
                         ),
@@ -101,12 +145,6 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
         },
       ),
     );
-  }
-
-  void _onScroll() {
-    if (_isBottom) {
-      context.read<ProdukhukumBloc>().add(ProdukhukumFetched());
-    }
   }
 
   bool get _isBottom {

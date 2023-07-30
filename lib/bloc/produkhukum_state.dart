@@ -1,6 +1,6 @@
 part of 'produkhukum_bloc.dart';
 
-enum ProdukhukumStatus { initial, success, failure }
+enum ProdukhukumStatus { initial, success, loading, failure }
 
 final class ProdukhukumState extends Equatable {
   const ProdukhukumState({

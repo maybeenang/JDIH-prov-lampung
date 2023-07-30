@@ -6,3 +6,12 @@ abstract class ProdukhukumEvent extends Equatable {
 }
 
 final class ProdukhukumFetched extends ProdukhukumEvent {}
+
+final class ProdukhukumRefresh extends ProdukhukumEvent {
+  ProdukhukumRefresh({required this.refreshController});
+
+  final BuildContext refreshController;
+
+  @override
+  List<Object> get props => [refreshController];
+}
