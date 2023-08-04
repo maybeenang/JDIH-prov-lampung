@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ProdukHukum extends Equatable {
   // prod_url_lampiran
@@ -49,52 +50,58 @@ class ProdukHukum extends Equatable {
   // prod_status
   final String? status;
 
-  ProdukHukum({
-    this.url_lampiran,
-    this.judul,
-    this.deskripsi,
-    this.abstrak,
-    this.jenisPeraturan,
-    this.noPeraturan,
-    this.tahunTerbit,
-    this.tanggal,
-    this.teuBadan,
-    this.sumber,
-    this.tempatTerbit,
-    this.bidangHukum,
-    this.subjek,
-    this.bahasa,
-    this.lokasi,
-    this.status,
-  });
+  final String? url;
+
+  final String? nama_file;
+
+  ProdukHukum(
+      {this.url_lampiran,
+      this.judul,
+      this.deskripsi,
+      this.abstrak,
+      this.jenisPeraturan,
+      this.noPeraturan,
+      this.tahunTerbit,
+      this.tanggal,
+      this.teuBadan,
+      this.sumber,
+      this.tempatTerbit,
+      this.bidangHukum,
+      this.subjek,
+      this.bahasa,
+      this.lokasi,
+      this.status,
+      this.url,
+      this.nama_file});
 
   factory ProdukHukum.fromJson(Map<String, dynamic> json) {
     // return json['data'].map((e) => ProdukHukum.fromJson(e)).toList();
 
     return ProdukHukum(
-      url_lampiran: json['prod_url_lampiran'],
-      judul: json['kategori']['category'] +
-          " No." +
-          json['prod_no'] +
-          " Tahun " +
-          json['prod_tahun'] +
-          " Tentang " +
-          json['prod_judul'],
-      deskripsi: json['prod_deskripsi'],
-      abstrak: json['prod_url_abstrak'],
-      jenisPeraturan: json['kategori']['category'],
-      noPeraturan: json['prod_no'],
-      tahunTerbit: json['prod_tahun'],
-      tanggal: json['prod_tanggal'],
-      teuBadan: json['prod_teu_pengarang'],
-      sumber: json['prod_sumber'],
-      tempatTerbit: json['prod_tempat'],
-      bidangHukum: json['prod_bidanghukum'],
-      subjek: json['prod_subjek'],
-      bahasa: json['prod_bahasa'],
-      lokasi: json['prod_lokasi'],
-      status: json['prod_status'],
-    );
+        url_lampiran: json['prod_url_lampiran'],
+        judul: json['kategori']['category'] +
+            " No." +
+            json['prod_no'] +
+            " Tahun " +
+            json['prod_tahun'] +
+            " Tentang " +
+            json['prod_judul'],
+        deskripsi: json['prod_deskripsi'],
+        abstrak: json['prod_url_abstrak'],
+        jenisPeraturan: json['kategori']['category'],
+        noPeraturan: json['prod_no'],
+        tahunTerbit: json['prod_tahun'],
+        tanggal: json['prod_tanggal'],
+        teuBadan: json['prod_teu_pengarang'],
+        sumber: json['prod_sumber'],
+        tempatTerbit: json['prod_tempat'],
+        bidangHukum: json['prod_bidanghukum'],
+        subjek: json['prod_subjek'],
+        bahasa: json['prod_bahasa'],
+        lokasi: json['prod_lokasi'],
+        status: json['prod_status'],
+        url: dotenv.env['DOWNLOAD_URL'].toString() + json['prod_url_lampiran'],
+        nama_file: json['prod_nama_file']);
   }
 
   @override
@@ -116,5 +123,7 @@ class ProdukHukum extends Equatable {
         bahasa,
         lokasi,
         status,
+        url,
+        nama_file
       ];
 }

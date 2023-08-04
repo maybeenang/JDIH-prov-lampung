@@ -15,3 +15,15 @@ final class ProdukhukumRefresh extends ProdukhukumEvent {
   @override
   List<Object> get props => [refreshController];
 }
+
+final class ProdukHukumFilter extends ProdukhukumEvent {
+  ProdukHukumFilter(
+      {required this.judul, required this.tahun, required this.nomor});
+
+  final String judul;
+  final String tahun;
+  final String nomor;
+
+  @override
+  List<Object> get props => [judul, tahun, nomor];
+}

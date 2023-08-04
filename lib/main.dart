@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jdih/bloc/produkhukum_bloc.dart';
+import 'package:jdih/bloc/produkhukum_bloc/produkhukum_bloc.dart';
 import 'package:jdih/pages/artikelhukum_page.dart';
 import 'package:jdih/pages/berita_page.dart';
 import 'package:jdih/pages/detailprodukhukum_page.dart';
@@ -35,7 +35,7 @@ final GoRouter _router = GoRouter(routes: <RouteBase>[
                   return DetailProdukHukumPage(
                       data: state.extra! as List<dynamic>);
                 },
-              )
+              ),
             ]),
         GoRoute(
             path: 'monografihukum',
@@ -47,7 +47,11 @@ final GoRouter _router = GoRouter(routes: <RouteBase>[
         GoRoute(
             path: 'artikelhukum',
             builder: (context, state) => const ArtikelHukumPage()),
-        GoRoute(path: 'galeri', builder: (context, state) => const GaleriPage())
+        GoRoute(
+            path: 'galeri', builder: (context, state) => const GaleriPage()),
+        // GoRoute(
+        //     path: 'filterprodukhukum',
+        //     builder: (context, state) => const FilterProdukHukumPage())
       ])
 ]);
 

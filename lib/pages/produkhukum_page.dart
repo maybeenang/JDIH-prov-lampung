@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jdih/bloc/produkhukum_bloc.dart';
+import 'package:jdih/bloc/produkhukum_bloc/produkhukum_bloc.dart';
 import 'package:jdih/components/appbar_page.dart';
 import 'package:jdih/components/produkhukum_item.dart';
 import 'package:jdih/components/search_box_produk.dart';
@@ -34,8 +34,9 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
       () {
         if (_scrollController.position.pixels ==
             _scrollController.position.maxScrollExtent) {
-          if (context.read<ProdukhukumBloc>().state.status !=
-              ProdukhukumStatus.failure) {
+          if ((!context.read<ProdukhukumBloc>().state.hasReachedMax) &&
+              (context.read<ProdukhukumBloc>().state.status !=
+                  ProdukhukumStatus.loading)) {
             context.read<ProdukhukumBloc>().add(ProdukhukumFetched());
           }
         }
@@ -67,6 +68,11 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
               ..hideCurrentSnackBar()
               ..showSnackBar(snackbar('Gagal memuat data'));
           }
+          if (state.status == ProdukhukumStatus.filter) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(snackbar('ASDASDA'));
+          }
 
           if (state.hasReachedMax) {
             ScaffoldMessenger.of(context)
@@ -83,7 +89,9 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
           return RefreshIndicator(
             onRefresh: () async {
               await Future.delayed(const Duration(seconds: 2));
+              // ignore: use_build_context_synchronously
               context.read<ProdukhukumBloc>().add(
+                    // ignore: use_build_context_synchronously
                     ProdukhukumRefresh(
                       refreshController: context,
                     ),
@@ -134,7 +142,9 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
                                     : state.status == ProdukhukumStatus.failure
                                         ? const Center(
                                             child: Text('Gagal memuat data'))
-                                        : const SizedBox()
+                                        : const SizedBox(
+                                            height: 40,
+                                          )
                                 : ProdukItem(data: [state.produkHukum[index]]);
                           },
                         ),

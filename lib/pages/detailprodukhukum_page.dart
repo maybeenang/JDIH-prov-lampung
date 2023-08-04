@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:jdih/components/appbar_page.dart';
 import 'package:jdih/components/table_detailprodukhukum.dart';
+import 'package:jdih/services/download_service.dart';
 import 'package:jdih/styles/colors.dart';
 
 class DetailProdukHukumPage extends StatelessWidget {
   const DetailProdukHukumPage({super.key, required this.data});
 
   final List<dynamic> data;
+
+  Future<void> _downloadFile(BuildContext context) async {
+    DownloadService downloadService = DownloadService(context: context);
+
+    await downloadService.downloadFile(
+        url: data[0].url!, nama_file: data[0].nama_file!);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +60,9 @@ class DetailProdukHukumPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    await _downloadFile(context);
+                  },
                   icon: const Icon(Icons.file_download, color: Colors.white),
                   label: const Text('Unduh Dokumen',
                       style: TextStyle(color: Colors.white, fontSize: 18))),

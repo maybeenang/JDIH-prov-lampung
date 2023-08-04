@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jdih/models/produkhukum_model.dart';
+import 'package:jdih/services/download_service.dart';
 
 import '../styles/colors.dart';
 
 class ProdukItem extends StatelessWidget {
-  const ProdukItem({super.key, required this.data});
+  ProdukItem({super.key, required this.data});
+
+  Future<void> _downloadFile(BuildContext context) async {
+    DownloadService downloadService = DownloadService(context: context);
+
+    await downloadService.downloadFile(
+        url: data[0].url!, nama_file: data[0].nama_file!);
+  }
 
   final List<ProdukHukum> data;
   @override
@@ -85,18 +93,9 @@ class ProdukItem extends StatelessWidget {
                       )),
                   const SizedBox(width: 10.0),
                   ElevatedButton(
-                      onPressed: () {
-                        final snackbar = SnackBar(
-                          content: const Text('Unduh Dokumen'),
-                          action: SnackBarAction(
-                            label: 'Tutup',
-                            onPressed: () {},
-                          ),
-                        );
-
-                        // if snackbar is not showing
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                      onPressed: () async {
+                        _downloadFile(context);
+                        // print(await getExternalStorageDirectories());
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateColor.resolveWith(
