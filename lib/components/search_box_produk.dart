@@ -22,7 +22,7 @@ class _SearchBoxProdukState extends State<SearchBoxProduk> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4.0), color: AppColors.textColor),
       child: Column(
@@ -38,9 +38,9 @@ class _SearchBoxProdukState extends State<SearchBoxProduk> {
                 fontSize: 14,
               ),
             ),
-            style: TextStyle(color: Colors.black, fontSize: 14),
+            style: const TextStyle(color: Colors.black, fontSize: 14),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             children: [
               Expanded(
@@ -57,7 +57,7 @@ class _SearchBoxProdukState extends State<SearchBoxProduk> {
                       fontSize: 14,
                     ),
                   ),
-                  style: TextStyle(color: Colors.black, fontSize: 14),
+                  style: const TextStyle(color: Colors.black, fontSize: 14),
                 ),
               ),
               const SizedBox(
@@ -76,7 +76,7 @@ class _SearchBoxProdukState extends State<SearchBoxProduk> {
                       fontSize: 14,
                     ),
                   ),
-                  style: TextStyle(color: Colors.black, fontSize: 14),
+                  style: const TextStyle(color: Colors.black, fontSize: 14),
                 ),
               ),
             ],
@@ -88,7 +88,7 @@ class _SearchBoxProdukState extends State<SearchBoxProduk> {
               onPressed: () {},
               style: ButtonStyle(
                   backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => Color(0xFFF4C54D)),
+                      (states) => const Color(0xFFF4C54D)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4.0),

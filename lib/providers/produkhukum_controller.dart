@@ -39,10 +39,8 @@ class ProdukHukumController extends _$ProdukHukumController {
 
           return produkHukum;
         } on DioException catch (e) {
-          print("memek $e");
           return Future.error(e.message ?? 'Terjadi kesalahan');
         } catch (e) {
-          print("jembut $e");
           return Future.error(e.toString());
         }
       },

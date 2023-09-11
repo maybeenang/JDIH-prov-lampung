@@ -34,9 +34,9 @@ class DetailProdukHukumPage extends ConsumerWidget {
                 ),
                 padding:
                     const EdgeInsets.only(left: 20.0, top: 5.0, bottom: 5.0),
-                child: Text(
+                child: const Text(
                   "ABC",
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: AppColors.textColor,
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
@@ -73,9 +73,9 @@ class DetailProdukHukumPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 5),
-              Text(
+              const Text(
                 "ABC",
-                style: const TextStyle(
+                style: TextStyle(
                     color: AppColors.textColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,

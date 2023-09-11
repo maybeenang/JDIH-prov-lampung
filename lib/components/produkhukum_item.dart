@@ -6,7 +6,7 @@ import 'package:jdih/services/download_service.dart';
 import '../styles/colors.dart';
 
 class ProdukItem extends StatelessWidget {
-  ProdukItem({super.key, required this.data});
+  const ProdukItem({super.key, required this.data});
 
   Future<void> _downloadFile(BuildContext context) async {
     DownloadService downloadService = DownloadService(context: context);
@@ -27,7 +27,7 @@ class ProdukItem extends StatelessWidget {
           color: Colors.white,
         ),
         child: Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -48,10 +48,10 @@ class ProdukItem extends StatelessWidget {
                     color: AppColors.textColor,
                     size: 14,
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Text(
                     data[0].tahun!,
-                    style: TextStyle(fontSize: 10, color: AppColors.textColor),
+                    style: const TextStyle(fontSize: 10, color: AppColors.textColor),
                   )
                 ],
               ),
@@ -62,10 +62,10 @@ class ProdukItem extends StatelessWidget {
                     color: AppColors.textColor,
                     size: 14,
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Text(
                     data[0].bidangHukum!,
-                    style: TextStyle(fontSize: 10, color: AppColors.textColor),
+                    style: const TextStyle(fontSize: 10, color: AppColors.textColor),
                   )
                 ],
               ),

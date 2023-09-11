@@ -62,7 +62,7 @@ class _ProdukHukumPageState extends ConsumerState<ProdukHukumPage> {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          Text(
+          const Text(
             'Temukan Produk Hukum',
             style: TextStyle(
               fontSize: 20,
@@ -71,7 +71,7 @@ class _ProdukHukumPageState extends ConsumerState<ProdukHukumPage> {
             ),
           ),
           const SizedBox(height: 10),
-          SearchBoxProduk(),
+          const SearchBoxProduk(),
           const SizedBox(height: 20),
           produkHukum.maybeWhen(
             orElse: () {
@@ -80,12 +80,18 @@ class _ProdukHukumPageState extends ConsumerState<ProdukHukumPage> {
               );
             },
             data: (data) {
+              if (data == null) {
+                return const Center(
+                  child: Text('Terjadi kesalahan'),
+                );
+              }
+
               return ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(data![index].judul!),
+                      title: Text(data[index].judul!),
                       subtitle: Text(data[index].no!),
                       onTap: () {
                         Navigator.pushNamed(context, '/produkhukum/detail',
@@ -96,7 +102,7 @@ class _ProdukHukumPageState extends ConsumerState<ProdukHukumPage> {
                   separatorBuilder: (context, index) {
                     return const Divider();
                   },
-                  itemCount: data!.length);
+                  itemCount: data.length);
             },
           ),
         ],

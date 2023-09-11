@@ -16,7 +16,7 @@ class ArtikelItem extends StatelessWidget {
           color: Colors.white,
         ),
         child: Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -35,7 +35,7 @@ class ArtikelItem extends StatelessWidget {
                       color: AppColors.textColor,
                       fontSize: 12,
                       fontWeight: FontWeight.w400)),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               const Row(
                 children: [
                   Icon(

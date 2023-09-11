@@ -22,8 +22,8 @@ class BeritaPage extends StatelessWidget {
                   height: 10,
                 ),
                 itemCount: 8,
-                itemBuilder: (context, index) => BeritaItem(),
-                padding: EdgeInsets.all(20.0),
+                itemBuilder: (context, index) => const BeritaItem(),
+                padding: const EdgeInsets.all(20.0),
               ),
             )
           ],
