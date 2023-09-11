@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jdih/models/produkhukum_model.dart';
+import 'package:jdih/models/produkhukum.dart';
 import 'package:jdih/services/download_service.dart';
 
 import '../styles/colors.dart';
@@ -12,7 +12,7 @@ class ProdukItem extends StatelessWidget {
     DownloadService downloadService = DownloadService(context: context);
 
     await downloadService.downloadFile(
-        url: data[0].url!, nama_file: data[0].nama_file!);
+        url: data[0].url!, namaFile: data[0].namaFile!);
   }
 
   final List<ProdukHukum> data;
@@ -50,7 +50,7 @@ class ProdukItem extends StatelessWidget {
                   ),
                   SizedBox(width: 5.0),
                   Text(
-                    data[0].tahunTerbit!,
+                    data[0].tahun!,
                     style: TextStyle(fontSize: 10, color: AppColors.textColor),
                   )
                 ],
@@ -64,7 +64,7 @@ class ProdukItem extends StatelessWidget {
                   ),
                   SizedBox(width: 5.0),
                   Text(
-                    data[0].jenisPeraturan!,
+                    data[0].bidangHukum!,
                     style: TextStyle(fontSize: 10, color: AppColors.textColor),
                   )
                 ],

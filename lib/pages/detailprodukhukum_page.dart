@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdih/components/appbar_page.dart';
-import 'package:jdih/components/table_detailprodukhukum.dart';
-import 'package:jdih/services/download_service.dart';
 import 'package:jdih/styles/colors.dart';
 
-class DetailProdukHukumPage extends StatelessWidget {
-  const DetailProdukHukumPage({super.key, required this.data});
+class DetailProdukHukumPage extends ConsumerWidget {
+  const DetailProdukHukumPage({super.key});
 
-  final List<dynamic> data;
+  // Future<void> _downloadFile(BuildContext context) async {
+  //   DownloadService downloadService = DownloadService(context: context);
 
-  Future<void> _downloadFile(BuildContext context) async {
-    DownloadService downloadService = DownloadService(context: context);
-
-    await downloadService.downloadFile(
-        url: data[0].url!, nama_file: data[0].nama_file!);
-  }
+  //   await downloadService.downloadFile(
+  //       url: data[0].url!, namaFile: data[0].namaFile!);
+  // }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: appBarPage("Produk Hukum", context),
       body: SingleChildScrollView(
@@ -38,7 +35,7 @@ class DetailProdukHukumPage extends StatelessWidget {
                 padding:
                     const EdgeInsets.only(left: 20.0, top: 5.0, bottom: 5.0),
                 child: Text(
-                  data[0].judul,
+                  "ABC",
                   style: const TextStyle(
                       color: AppColors.textColor,
                       fontSize: 18,
@@ -61,7 +58,7 @@ class DetailProdukHukumPage extends StatelessWidget {
                     ),
                   ),
                   onPressed: () async {
-                    await _downloadFile(context);
+                    // await _downloadFile(context);
                   },
                   icon: const Icon(Icons.file_download, color: Colors.white),
                   label: const Text('Unduh Dokumen',
@@ -77,7 +74,7 @@ class DetailProdukHukumPage extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                data[0].deskripsi,
+                "ABC",
                 style: const TextStyle(
                     color: AppColors.textColor,
                     fontSize: 16,
@@ -94,9 +91,9 @@ class DetailProdukHukumPage extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              TableDetailProdukHukum(
-                data: data,
-              )
+              // TableDetailProdukHukum(
+              //   data: ,
+              // )
             ],
           ),
         ),

@@ -1,19 +1,21 @@
+// ignore_for_file: unnecessary_const
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jdih/bloc/produkhukum_bloc/produkhukum_bloc.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdih/components/appbar_page.dart';
-import 'package:jdih/components/produkhukum_item.dart';
 import 'package:jdih/components/search_box_produk.dart';
+import 'package:jdih/providers/produkhukum_controller.dart';
 import 'package:jdih/styles/colors.dart';
 
-class ProdukHukumPage extends StatefulWidget {
+class ProdukHukumPage extends ConsumerStatefulWidget {
   const ProdukHukumPage({super.key});
 
   @override
-  State<ProdukHukumPage> createState() => _ProdukHukumPageState();
+  // ignore: library_private_types_in_public_api
+  _ProdukHukumPageState createState() => _ProdukHukumPageState();
 }
 
-class _ProdukHukumPageState extends State<ProdukHukumPage> {
+class _ProdukHukumPageState extends ConsumerState<ProdukHukumPage> {
   final _scrollController = ScrollController();
   bool loading = true;
 
@@ -33,13 +35,7 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
     _scrollController.addListener(
       () {
         if (_scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent) {
-          if ((!context.read<ProdukhukumBloc>().state.hasReachedMax) &&
-              (context.read<ProdukhukumBloc>().state.status !=
-                  ProdukhukumStatus.loading)) {
-            context.read<ProdukhukumBloc>().add(ProdukhukumFetched());
-          }
-        }
+            _scrollController.position.maxScrollExtent) {}
       },
     );
     Future.delayed(const Duration(milliseconds: 500)).then((__) {
@@ -59,100 +55,51 @@ class _ProdukHukumPageState extends State<ProdukHukumPage> {
 
   @override
   Widget build(BuildContext context) {
+    final produkHukum = ref.watch(produkHukumControllerProvider);
+
     return Scaffold(
       appBar: appBarPage('Produk Hukum', context),
-      body: BlocConsumer<ProdukhukumBloc, ProdukhukumState>(
-        listener: (context, state) {
-          if (state.status == ProdukhukumStatus.failure) {
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(snackbar('Gagal memuat data'));
-          }
-          if (state.status == ProdukhukumStatus.filter) {
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(snackbar('ASDASDA'));
-          }
-
-          if (state.hasReachedMax) {
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(snackbar('Tidak ada data lagi'));
-          }
-
-          if (state.status == ProdukhukumStatus.initial ||
-              state.status == ProdukhukumStatus.loading) {
-            ScaffoldMessenger.of(context)..hideCurrentSnackBar();
-          }
-        },
-        builder: (context, state) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              await Future.delayed(const Duration(seconds: 2));
-              // ignore: use_build_context_synchronously
-              context.read<ProdukhukumBloc>().add(
-                    // ignore: use_build_context_synchronously
-                    ProdukhukumRefresh(
-                      refreshController: context,
-                    ),
-                  );
-            },
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              controller: _scrollController,
-              child: Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Temukan Produk Hukum',
-                          style: TextStyle(
-                              color: AppColors.textColor,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        SizedBox(height: 20.0),
-                        SearchBoxProduk()
-                      ],
-                    ),
-                  ),
-                  loading
-                      ? const Center(child: CircularProgressIndicator())
-                      : ListView.separated(
-                          primary: false,
-                          padding: const EdgeInsets.all(20.0),
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: state.hasReachedMax
-                              ? state.produkHukum.length
-                              : state.produkHukum.length + 1,
-                          separatorBuilder: (context, index) {
-                            return const SizedBox(
-                              height: 20,
-                            );
-                          },
-                          itemBuilder: (context, index) {
-                            return index >= state.produkHukum.length
-                                ? state.status == ProdukhukumStatus.loading
-                                    ? const Center(
-                                        child: CircularProgressIndicator())
-                                    : state.status == ProdukhukumStatus.failure
-                                        ? const Center(
-                                            child: Text('Gagal memuat data'))
-                                        : const SizedBox(
-                                            height: 40,
-                                          )
-                                : ProdukItem(data: [state.produkHukum[index]]);
-                          },
-                        ),
-                ],
-              ),
+      body: ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          Text(
+            'Temukan Produk Hukum',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textColor,
             ),
-          );
-        },
+          ),
+          const SizedBox(height: 10),
+          SearchBoxProduk(),
+          const SizedBox(height: 20),
+          produkHukum.maybeWhen(
+            orElse: () {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+            data: (data) {
+              return ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(data![index].judul!),
+                      subtitle: Text(data[index].no!),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/produkhukum/detail',
+                            arguments: data[index]);
+                      },
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const Divider();
+                  },
+                  itemCount: data!.length);
+            },
+          ),
+        ],
       ),
     );
   }

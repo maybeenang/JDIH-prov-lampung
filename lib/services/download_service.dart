@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class DownloadService {
@@ -34,7 +33,7 @@ class DownloadService {
   }
 
   Future<void> downloadFile(
-      {required String url, required String nama_file}) async {
+      {required String url, required String namaFile}) async {
     bool _permissionReady = await _checkPermission();
     String _localPath = '/storage/emulated/0/Download/';
 
@@ -53,9 +52,9 @@ class DownloadService {
       await Directory(_localPath).create(recursive: true);
     }
 
-    if (File(_localPath + nama_file).existsSync()) {
+    if (File(_localPath + namaFile).existsSync()) {
       showSnackBar("File sudah ada", "Buka", () {
-        OpenFile.open(_localPath + nama_file);
+        OpenFile.open(_localPath + namaFile);
       });
       return;
     }
@@ -64,12 +63,12 @@ class DownloadService {
       showSnackBar("Sedang mendownlad Dokumen", " ", () {});
       await FileDownloader.downloadFile(
         url: url,
-        name: nama_file,
+        name: namaFile,
         onDownloadError: (errorMessage) {
           print(errorMessage);
           ScaffoldMessenger.of(context)
               .showSnackBar(snackbar("Gagal mendownload file", "Coba lagi", () {
-            downloadFile(url: url, nama_file: nama_file);
+            downloadFile(url: url, namaFile: namaFile);
           }));
           throw Exception(errorMessage);
         },
