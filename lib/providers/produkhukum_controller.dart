@@ -14,14 +14,15 @@ class ProdukHukumController extends _$ProdukHukumController {
 
   @override
   Future<List<ProdukHukum>?> build() {
-    return _initialFetchProdukHukum();
+    return initialFetchProdukHukum();
   }
 
-  Future<List<ProdukHukum>?> _initialFetchProdukHukum() async {
+  Future<List<ProdukHukum>?> initialFetchProdukHukum() async {
     state = const AsyncValue.loading();
     final initialProdukHukum = await AsyncValue.guard<List<ProdukHukum>>(
       () async {
         try {
+          page = 1;
           String query = "?page=$page";
           final Uri uri = Uri.parse(
             EndPoint.produkHukumBaseUrl + EndPoint.produkHukum + query,

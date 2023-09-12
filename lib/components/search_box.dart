@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../styles/colors.dart';
 
@@ -7,49 +8,42 @@ class SearchBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.75,
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Judul Dokumen',
-              hintStyle: const TextStyle(
-                color: Colors.black26,
-                fontSize: 14,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.black26,
-                ),
+    return GestureDetector(
+      onTap: () {
+        context.push('/produkhukum');
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.75,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 13),
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4.0),
+                color: Colors.white,
+                border: Border.all(color: Colors.black26),
               ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: const Text("Cari Produk Hukum"),
             ),
           ),
-        ),
-        IconButton.filled(
-            style: ButtonStyle(
-              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                  const EdgeInsets.all(10.0)),
-              backgroundColor: MaterialStateColor.resolveWith(
-                  (states) => AppColors.textColor),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
+          IconButton.filled(
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    const EdgeInsets.all(10.0)),
+                backgroundColor: MaterialStateColor.resolveWith(
+                    (states) => AppColors.textColor),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
                 ),
               ),
-            ),
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-            color: Colors.white),
-      ],
+              onPressed: () {},
+              icon: const Icon(Icons.search),
+              color: Colors.white),
+        ],
+      ),
     );
   }
 }

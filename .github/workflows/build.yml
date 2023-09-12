@@ -15,8 +15,6 @@ jobs:
         # membuat .env:
             - uses: actions/checkout@v3
             - run: echo API_KEY=\${{ secrets.API_KEY }} > .env
-            - run: ls -a
-            - run: cat .env
             - name: Setup Java
               uses: actions/setup-java@v1
               with:

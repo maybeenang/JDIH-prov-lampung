@@ -63,77 +63,84 @@ class _ProdukHukumPageState extends ConsumerState<ProdukHukumPage> {
     final produkHukum = ref.watch(produkHukumControllerProvider);
     return Scaffold(
       appBar: appBarPage('Produk Hukum', context),
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Temukan Produk Hukum',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textColor,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await ref
+              .refresh(produkHukumControllerProvider.notifier)
+              .initialFetchProdukHukum();
+        },
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Temukan Produk Hukum',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textColor,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  SearchBoxProduk(),
-                  SizedBox(height: 5),
-                ],
+                    SizedBox(height: 10),
+                    SearchBoxProduk(),
+                    SizedBox(height: 5),
+                  ],
+                ),
               ),
             ),
-          ),
-          produkHukum.maybeWhen(
-            orElse: () {
-              return const SliverToBoxAdapter(
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            },
-            data: (data) {
-              if (data == null) {
+            produkHukum.maybeWhen(
+              orElse: () {
                 return const SliverToBoxAdapter(
                   child: Center(
-                    child: Text('Terjadi kesalahan'),
+                    child: CircularProgressIndicator(),
                   ),
                 );
-              }
-
-              if (data.isEmpty) {
-                return const SliverToBoxAdapter(
-                  child: Center(
-                    child: Text('Tidak ada data'),
-                  ),
-                );
-              }
-
-              return SliverList.separated(
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: index < data.length
-                        ? ProdukItem(data: data[index])
-                        : const Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          ),
+              },
+              data: (data) {
+                if (data == null) {
+                  return const SliverToBoxAdapter(
+                    child: Center(
+                      child: Text('Terjadi kesalahan'),
+                    ),
                   );
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(height: 10);
-                },
-                itemCount: data.length + 1,
-              );
-            },
-          ),
-        ],
+                }
+
+                if (data.isEmpty) {
+                  return const SliverToBoxAdapter(
+                    child: Center(
+                      child: Text('Tidak ada data'),
+                    ),
+                  );
+                }
+
+                return SliverList.separated(
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: index < data.length
+                          ? ProdukItem(data: data[index])
+                          : const Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(height: 10);
+                  },
+                  itemCount: data.length + 1,
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
