@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdih/components/appbar_page.dart';
 import 'package:jdih/components/berita_item.dart';
 import 'package:jdih/components/search_box.dart';
+import 'package:jdih/providers/berita_controller.dart';
 
-class BeritaPage extends StatelessWidget {
+class BeritaPage extends HookConsumerWidget {
   const BeritaPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final berita = ref.watch(beritaControllerProvider);
+
     return Scaffold(
         appBar: appBarPage("Berita", context),
         body: Column(
@@ -16,15 +20,33 @@ class BeritaPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
               child: SearchBox(),
             ),
-            Expanded(
-              child: ListView.separated(
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 10,
-                ),
-                itemCount: 8,
-                itemBuilder: (context, index) => const BeritaItem(),
-                padding: const EdgeInsets.all(20.0),
-              ),
+            berita.maybeWhen(
+              orElse: () {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+              data: (data) {
+                if (data == null) {
+                  return const Center(
+                    child: Text("Data tidak ditemukan"),
+                  );
+                }
+                return Expanded(
+                  child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      return BeritaItem(
+                        data: data[index],
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 10.0);
+                    },
+                  ),
+                );
+              },
             )
           ],
         ));

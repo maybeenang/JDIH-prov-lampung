@@ -9,4 +9,9 @@ class AppString {
   static String convertDownloadUrl(String url) {
     return EndPoint.downloadProdukHukumBaseUrl + url;
   }
+
+  static String convertDate(String date) {
+    final DateTime dateTime = DateTime.parse(date);
+    return "${dateTime.day}-${dateTime.month}-${dateTime.year}";
+  }
 }

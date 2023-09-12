@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:jdih/constants/string.dart';
+import 'package:jdih/models/berita.dart';
 
 import '../styles/colors.dart';
 
 class BeritaItem extends StatelessWidget {
-  const BeritaItem({super.key});
+  const BeritaItem({super.key, required this.data});
+
+  final Berita data;
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +18,8 @@ class BeritaItem extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black38),
           borderRadius: BorderRadius.circular(10),
-          image: const DecorationImage(
-            image: AssetImage('assets/images/berita.png'),
+          image: DecorationImage(
+            image: NetworkImage(data.image!),
             fit: BoxFit.cover,
           ),
         ),
@@ -26,8 +30,8 @@ class BeritaItem extends StatelessWidget {
               height: 70.0,
               width: double.infinity,
               color: Colors.white,
-              child: const Padding(
-                padding: EdgeInsets.all(10.0),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,33 +40,33 @@ class BeritaItem extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.calendar_today,
                                 color: AppColors.textColor,
                                 size: 14,
                               ),
-                              SizedBox(width: 5.0),
+                              const SizedBox(width: 5.0),
                               Text(
-                                '23 Juni 2023',
-                                style: TextStyle(
+                                AppString.convertDate(data.date!),
+                                style: const TextStyle(
                                   color: AppColors.textColor,
                                   fontSize: 12,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(width: 10.0),
+                          const SizedBox(width: 10.0),
                           Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.remove_red_eye_outlined,
                                 color: AppColors.textColor,
                                 size: 14,
                               ),
-                              SizedBox(width: 5.0),
+                              const SizedBox(width: 5.0),
                               Text(
-                                '60',
-                                style: TextStyle(
+                                data.dilihat!.toString(),
+                                style: const TextStyle(
                                   color: AppColors.textColor,
                                   fontSize: 12,
                                 ),
@@ -72,9 +76,9 @@ class BeritaItem extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        'Pelaksanaan Rapat Koordinasi Pembinaan dan Pengembangan JDIH Provinsi Lampung',
+                        data.title!,
                         maxLines: 2,
-                        style: TextStyle(
+                        style: const TextStyle(
                           overflow: TextOverflow.ellipsis,
                           color: AppColors.textColor,
                           fontSize: 14,

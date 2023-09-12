@@ -133,21 +133,21 @@ class HomePage extends ConsumerWidget {
                 ],
               ),
             ),
-            Container(
-              height: 200,
-              child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                children: const [
-                  BeritaItem(),
-                  SizedBox(width: 10.0),
-                  BeritaItem(),
-                  SizedBox(width: 10.0),
-                  BeritaItem(),
-                ],
-              ),
-            )
+            // Container(
+            //   height: 200,
+            //   child: ListView(
+            //     shrinkWrap: true,
+            //     scrollDirection: Axis.horizontal,
+            //     padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            //     children: const [
+            //       BeritaItem(),
+            //       SizedBox(width: 10.0),
+            //       BeritaItem(),
+            //       SizedBox(width: 10.0),
+            //       BeritaItem(),
+            //     ],
+            //   ),
+            // )
           ],
         ),
       ),
