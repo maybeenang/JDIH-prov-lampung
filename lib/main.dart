@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jdih/models/produkhukum.dart';
 import 'package:jdih/pages/artikelhukum_page.dart';
 import 'package:jdih/pages/berita_page.dart';
 import 'package:jdih/pages/detailprodukhukum_page.dart';
@@ -25,33 +26,45 @@ Future<void> main() async {
 
 final GoRouter _router = GoRouter(routes: <RouteBase>[
   GoRoute(
-      path: '/',
-      builder: (BuildContext context, GoRouterState state) => const HomePage(),
-      routes: [
-        GoRoute(
-            path: 'produkhukum',
-            builder: (context, state) => const ProdukHukumPage(),
-            routes: [
-              GoRoute(
-                path: 'detail',
-                builder: (context, state) {
-                  return const DetailProdukHukumPage();
-                },
-              ),
-            ]),
-        GoRoute(
-            path: 'monografihukum',
-            builder: (context, state) => const MonografiHukumPage()),
-        GoRoute(
-            path: 'putusan', builder: (context, state) => const PutusanPage()),
-        GoRoute(
-            path: 'berita', builder: (context, state) => const BeritaPage()),
-        GoRoute(
-            path: 'artikelhukum',
-            builder: (context, state) => const ArtikelHukumPage()),
-        GoRoute(
-            path: 'galeri', builder: (context, state) => const GaleriPage()),
-      ])
+    path: '/',
+    builder: (BuildContext context, GoRouterState state) => const HomePage(),
+    routes: [
+      GoRoute(
+        path: 'produkhukum',
+        builder: (context, state) => const ProdukHukumPage(),
+        routes: [
+          GoRoute(
+            path: 'detail',
+            builder: (context, state) {
+              return DetailProdukHukumPage(
+                data: state.extra! as ProdukHukum,
+              );
+            },
+          ),
+        ],
+      ),
+      GoRoute(
+        path: 'monografihukum',
+        builder: (context, state) => const MonografiHukumPage(),
+      ),
+      GoRoute(
+        path: 'putusan',
+        builder: (context, state) => const PutusanPage(),
+      ),
+      GoRoute(
+        path: 'berita',
+        builder: (context, state) => const BeritaPage(),
+      ),
+      GoRoute(
+        path: 'artikelhukum',
+        builder: (context, state) => const ArtikelHukumPage(),
+      ),
+      GoRoute(
+        path: 'galeri',
+        builder: (context, state) => const GaleriPage(),
+      ),
+    ],
+  )
 ]);
 
 class App extends StatelessWidget {

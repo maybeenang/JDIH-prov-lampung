@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdih/components/appbar_page.dart';
+import 'package:jdih/components/produkhukum_item.dart';
 import 'package:jdih/components/search_box_produk.dart';
 import 'package:jdih/providers/produkhukum_controller.dart';
 import 'package:jdih/styles/colors.dart';
@@ -35,7 +36,11 @@ class _ProdukHukumPageState extends ConsumerState<ProdukHukumPage> {
     _scrollController.addListener(
       () {
         if (_scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent) {}
+            _scrollController.position.maxScrollExtent) {
+          ref
+              .read(produkHukumControllerProvider.notifier)
+              .loadMoreProdukHukum();
+        }
       },
     );
     Future.delayed(const Duration(milliseconds: 500)).then((__) {
@@ -56,53 +61,67 @@ class _ProdukHukumPageState extends ConsumerState<ProdukHukumPage> {
   @override
   Widget build(BuildContext context) {
     final produkHukum = ref.watch(produkHukumControllerProvider);
-
     return Scaffold(
       appBar: appBarPage('Produk Hukum', context),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          const Text(
-            'Temukan Produk Hukum',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textColor,
+      body: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Temukan Produk Hukum',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textColor,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  SearchBoxProduk(),
+                  SizedBox(height: 5),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 10),
-          const SearchBoxProduk(),
-          const SizedBox(height: 20),
           produkHukum.maybeWhen(
             orElse: () {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return const SliverToBoxAdapter(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             },
             data: (data) {
               if (data == null) {
-                return const Center(
-                  child: Text('Terjadi kesalahan'),
+                return const SliverToBoxAdapter(
+                  child: Center(
+                    child: Text('Terjadi kesalahan'),
+                  ),
                 );
               }
-
-              return ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(data[index].judul!),
-                      subtitle: Text(data[index].no!),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/produkhukum/detail',
-                            arguments: data[index]);
-                      },
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const Divider();
-                  },
-                  itemCount: data.length);
+              return SliverList.separated(
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: index < data.length
+                        ? ProdukItem(data: data[index])
+                        : const Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(height: 10);
+                },
+                itemCount: data.length + 1,
+              );
             },
           ),
         ],

@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdih/components/appbar_page.dart';
+import 'package:jdih/components/table_detailprodukhukum.dart';
+import 'package:jdih/constants/string.dart';
+import 'package:jdih/models/produkhukum.dart';
+import 'package:jdih/services/download_service.dart';
 import 'package:jdih/styles/colors.dart';
 
 class DetailProdukHukumPage extends ConsumerWidget {
-  const DetailProdukHukumPage({super.key});
+  const DetailProdukHukumPage({super.key, required this.data});
 
-  // Future<void> _downloadFile(BuildContext context) async {
-  //   DownloadService downloadService = DownloadService(context: context);
+  final ProdukHukum data;
 
-  //   await downloadService.downloadFile(
-  //       url: data[0].url!, namaFile: data[0].namaFile!);
-  // }
+  Future<void> _downloadFile(BuildContext context) async {
+    DownloadService downloadService = DownloadService(context: context);
+
+    await downloadService.downloadFile(
+        url: data.urlLampiran!, namaFile: data.namaFile!);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,9 +40,10 @@ class DetailProdukHukumPage extends ConsumerWidget {
                 ),
                 padding:
                     const EdgeInsets.only(left: 20.0, top: 5.0, bottom: 5.0),
-                child: const Text(
-                  "ABC",
-                  style: TextStyle(
+                child: Text(
+                  AppString.convertJudul(data.judul!, data.tahun!, data.no!,
+                      data.kategori!.category!),
+                  style: const TextStyle(
                       color: AppColors.textColor,
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
@@ -58,7 +65,7 @@ class DetailProdukHukumPage extends ConsumerWidget {
                     ),
                   ),
                   onPressed: () async {
-                    // await _downloadFile(context);
+                    await _downloadFile(context);
                   },
                   icon: const Icon(Icons.file_download, color: Colors.white),
                   label: const Text('Unduh Dokumen',
@@ -73,9 +80,9 @@ class DetailProdukHukumPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 5),
-              const Text(
-                "ABC",
-                style: TextStyle(
+              Text(
+                data.deskripsi!,
+                style: const TextStyle(
                     color: AppColors.textColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
@@ -91,9 +98,9 @@ class DetailProdukHukumPage extends ConsumerWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              // TableDetailProdukHukum(
-              //   data: ,
-              // )
+              TableDetailProdukHukum(
+                data: data,
+              )
             ],
           ),
         ),

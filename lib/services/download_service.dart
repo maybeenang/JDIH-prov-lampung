@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
+import 'package:jdih/constants/string.dart';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -62,18 +63,20 @@ class DownloadService {
     try {
       showSnackBar("Sedang mendownlad Dokumen", " ", () {});
       await FileDownloader.downloadFile(
-        url: url,
+        url: AppString.convertDownloadUrl(url),
         name: namaFile,
         onDownloadError: (errorMessage) {
           print(errorMessage);
           ScaffoldMessenger.of(context)
               .showSnackBar(snackbar("Gagal mendownload file", "Coba lagi", () {
-            downloadFile(url: url, namaFile: namaFile);
+            downloadFile(
+                url: AppString.convertDownloadUrl(url), namaFile: namaFile);
           }));
           throw Exception(errorMessage);
         },
         onDownloadCompleted: (path) async {
           print("File Downloaded at $path");
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context)
               .showSnackBar(snackbar("File berhasil didownload", "Buka", () {
             OpenFile.open(path);
@@ -81,7 +84,12 @@ class DownloadService {
         },
       );
     } catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(snackbar("Gagal mendownload file", "Coba lagi", () {
+        downloadFile(
+            url: AppString.convertDownloadUrl(url), namaFile: namaFile);
+      }));
     }
   }
 }

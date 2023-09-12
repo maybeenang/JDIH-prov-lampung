@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:jdih/models/produkhukum.dart';
 import 'package:jdih/styles/colors.dart';
 
 class TableDetailProdukHukum extends StatelessWidget {
   const TableDetailProdukHukum({super.key, required this.data});
 
-  final List<dynamic> data;
+  final ProdukHukum data;
 
   @override
   Widget build(BuildContext context) {
@@ -17,20 +18,20 @@ class TableDetailProdukHukum extends StatelessWidget {
       },
       children: [
         tableRow("Abstrak", "Peraturan Pemerintah"),
-        tableRow("Jenis Peraturan", nullCheck(data[0].jenisPeraturan)),
-        tableRow("Judul Peraturan", nullCheck(data[0].judul)),
-        tableRow("No", nullCheck(data[0].noPeraturan)),
-        tableRow("Tahun Terbit", nullCheck(data[0].tahunTerbit)),
-        tableRow("Tanggal Penetapan", nullCheck(data[0].tanggal)),
-        tableRow("Tanggal Pengundangan", nullCheck(data[0].tanggal)),
-        tableRow("T.E.U Badan", nullCheck(data[0].teuBadan)),
-        tableRow("Sumber", nullCheck(data[0].sumber)),
-        tableRow("Tempat Terbit", nullCheck(data[0].tempatTerbit)),
-        tableRow("Bidang Hukum", nullCheck(data[0].bidangHukum)),
-        tableRow("Subjek", nullCheck(data[0].subjek)),
-        tableRow("Bahasa", nullCheck(data[0].bahasa)),
-        tableRow("Lokasi", nullCheck(data[0].lokasi)),
-        tableRow("Status Produk Hukum", nullCheck(data[0].status)),
+        tableRow("Jenis Peraturan", nullCheck(data.kategori!.category)),
+        tableRow("Judul Peraturan", nullCheck(data.judul!)),
+        tableRow("No", nullCheck(data.no!)),
+        tableRow("Tahun Terbit", nullCheck(data.tempatTerbit!)),
+        tableRow("Tanggal Penetapan", nullCheck(data.tanggal!)),
+        tableRow("Tanggal Pengundangan", nullCheck(data.tanggal!)),
+        tableRow("T.E.U Badan", nullCheck(data.teuBadan!)),
+        tableRow("Sumber", nullCheck(data.sumber!)),
+        tableRow("Tempat Terbit", nullCheck(data.tempatTerbit!)),
+        tableRow("Bidang Hukum", nullCheck(data.bidangHukum!)),
+        tableRow("Subjek", nullCheck(data.subjek!)),
+        tableRow("Bahasa", nullCheck(data.bahasa!)),
+        tableRow("Lokasi", nullCheck(data.lokasi!)),
+        tableRow("Status Produk Hukum", nullCheck(data.status!)),
       ],
     );
   }

@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:jdih/models/kategori.dart';
 
 part 'produkhukum.freezed.dart';
 part 'produkhukum.g.dart';
@@ -26,6 +27,7 @@ class ProdukHukum with _$ProdukHukum {
     @JsonKey(name: 'prod_status', defaultValue: "") String? status,
     @JsonKey(name: 'prod_url', defaultValue: "") String? url,
     @JsonKey(name: 'prod_nama_file', defaultValue: "") String? namaFile,
+    @JsonKey(name: 'kategori') Kategori? kategori,
   }) = _ProdukHukum;
 
   factory ProdukHukum.fromJson(Map<String, dynamic> json) =>
