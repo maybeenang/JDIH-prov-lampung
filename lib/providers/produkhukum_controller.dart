@@ -64,7 +64,7 @@ class ProdukHukumController extends _$ProdukHukumController {
     final loadMoreProdukHukum = await AsyncValue.guard<List<ProdukHukum>>(
       () async {
         try {
-          page != 1 ? page++ : page = 1;
+          page += 1;
           String query = "?page=$page";
           final Uri uri = Uri.parse(
             EndPoint.produkHukumBaseUrl + EndPoint.produkHukum + query,
