@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdih/components/berita_item.dart';
 import 'package:jdih/components/menu_icon.dart';
 import 'package:jdih/components/search_box.dart';
+import 'package:jdih/providers/berita_controller.dart';
 
 import '../styles/colors.dart';
 
@@ -11,6 +12,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final berita = ref.watch(beritaControllerProvider);
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 90,
@@ -133,21 +135,36 @@ class HomePage extends ConsumerWidget {
                 ],
               ),
             ),
-            // Container(
-            //   height: 200,
-            //   child: ListView(
-            //     shrinkWrap: true,
-            //     scrollDirection: Axis.horizontal,
-            //     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            //     children: const [
-            //       BeritaItem(),
-            //       SizedBox(width: 10.0),
-            //       BeritaItem(),
-            //       SizedBox(width: 10.0),
-            //       BeritaItem(),
-            //     ],
-            //   ),
-            // )
+            SizedBox(
+              height: 200,
+              child: berita.maybeWhen(
+                orElse: () {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+                data: (data) {
+                  if (data == null) {
+                    return const Center(
+                      child: Text("Data tidak ditemukan"),
+                    );
+                  }
+                  return ListView.separated(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      return BeritaItem(
+                        data: data[index],
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(width: 10.0);
+                    },
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),
