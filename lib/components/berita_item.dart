@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jdih/constants/string.dart';
 import 'package:jdih/models/berita.dart';
 
@@ -11,28 +12,32 @@ class BeritaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: 300,
-        height: 166,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black38),
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(
-            image: NetworkImage(data.image!),
-            fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        context.push('/berita/detail/${data.id}');
+      },
+      child: Container(
+          width: 300,
+          height: 166,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black38),
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: NetworkImage(data.image!),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              height: 70.0,
-              width: double.infinity,
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                height: 70.0,
+                width: double.infinity,
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -77,7 +82,7 @@ class BeritaItem extends StatelessWidget {
                       ),
                       Text(
                         data.title!,
-                        maxLines: 2,
+                        maxLines: 1,
                         style: const TextStyle(
                           overflow: TextOverflow.ellipsis,
                           color: AppColors.textColor,
@@ -85,11 +90,23 @@ class BeritaItem extends StatelessWidget {
                           height: 0.95,
                           fontWeight: FontWeight.w700,
                         ),
+                      ),
+                      Text(
+                        data.content!,
+                        maxLines: 2,
+                        style: const TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          color: AppColors.textColor,
+                          fontSize: 14,
+                          height: 0.95,
+                        ),
                       )
-                    ]),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
-        ));
+            ],
+          )),
+    );
   }
 }

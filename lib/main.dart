@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:jdih/models/produkhukum.dart';
 import 'package:jdih/pages/artikelhukum_page.dart';
 import 'package:jdih/pages/berita_page.dart';
+import 'package:jdih/pages/detailberita_page.dart';
 import 'package:jdih/pages/detailprodukhukum_page.dart';
 import 'package:jdih/pages/galeri_page.dart';
 import 'package:jdih/pages/home_page.dart';
@@ -54,6 +55,17 @@ final GoRouter _router = GoRouter(routes: <RouteBase>[
       GoRoute(
         path: 'berita',
         builder: (context, state) => const BeritaPage(),
+        routes: [
+          GoRoute(
+            path: 'detail/:id',
+            builder: (context, GoRouterState state) {
+              final params = state.pathParameters;
+              return DetailBeritaPage(
+                params: params.values.first,
+              );
+            },
+          ),
+        ],
       ),
       GoRoute(
         path: 'artikelhukum',
