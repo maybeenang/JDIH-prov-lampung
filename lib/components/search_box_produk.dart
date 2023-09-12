@@ -1,26 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../styles/colors.dart';
 
-class SearchBoxProduk extends StatefulWidget {
+class SearchBoxProduk extends HookConsumerWidget {
   const SearchBoxProduk({super.key});
 
   @override
-  State<SearchBoxProduk> createState() => _SearchBoxProdukState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final judul = useTextEditingController();
+    final tahun = useTextEditingController();
+    final nomor = useTextEditingController();
 
-class _SearchBoxProdukState extends State<SearchBoxProduk> {
-  final judul = TextEditingController();
-  final tahun = TextEditingController();
-  final nomor = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
