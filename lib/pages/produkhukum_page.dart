@@ -103,6 +103,15 @@ class _ProdukHukumPageState extends ConsumerState<ProdukHukumPage> {
                   ),
                 );
               }
+
+              if (data.isEmpty) {
+                return const SliverToBoxAdapter(
+                  child: Center(
+                    child: Text('Tidak ada data'),
+                  ),
+                );
+              }
+
               return SliverList.separated(
                 itemBuilder: (context, index) {
                   return Padding(

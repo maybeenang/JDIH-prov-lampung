@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:jdih/providers/produkhukum_controller.dart';
 
 import '../styles/colors.dart';
 
@@ -77,7 +78,12 @@ class SearchBoxProduk extends HookConsumerWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                FocusScope.of(context).unfocus();
+                await ref
+                    .read(produkHukumControllerProvider.notifier)
+                    .searchProdukHukum(judul.text, tahun.text, nomor.text);
+              },
               style: ButtonStyle(
                   backgroundColor: MaterialStateColor.resolveWith(
                       (states) => const Color(0xFFF4C54D)),
