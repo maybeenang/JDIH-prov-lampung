@@ -22,7 +22,7 @@ jobs:
                 channel: 'stable'
             - run: flutter --version
             # membuat key.properties
-            - run: echo "API_KEY=${{ secrets.API_KEY }}" > ./.env
+            - run: echo API_KEY=${{ secrets.API_KEY }} > ./.env
             - run: echo keyPassword=${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
             - run: echo storePassword=${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
             - run: echo keyAlias=${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
