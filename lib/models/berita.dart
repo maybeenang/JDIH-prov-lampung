@@ -13,6 +13,7 @@ class Berita with _$Berita {
     @JsonKey(name: 'content', defaultValue: "") String? content,
     @JsonKey(name: 'image', defaultValue: "") String? image,
     @JsonKey(name: 'dilihat', defaultValue: 0) int? dilihat,
+    @JsonKey(name: 'tanggal', defaultValue: "") String? tanggal,
     @JsonKey(name: 'createdAt', defaultValue: "") String? date,
   }) = _Berita;
 

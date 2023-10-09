@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdih/components/berita_item.dart';
+import 'package:jdih/components/loading/loading_berita_item.dart';
 import 'package:jdih/components/menu_icon.dart';
 import 'package:jdih/components/search_box.dart';
 import 'package:jdih/providers/berita_controller.dart';
@@ -30,10 +32,7 @@ class HomePage extends ConsumerWidget {
               ),
               Text(
                 'JDIH Provinsi Lampung',
-                style: TextStyle(
-                    color: AppColors.textColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
+                style: TextStyle(color: AppColors.textColor, fontSize: 16, fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -61,10 +60,7 @@ class HomePage extends ConsumerWidget {
                   const SizedBox(height: 20.0),
                   const Text(
                     'Fitur',
-                    style: TextStyle(
-                        color: AppColors.textColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500),
+                    style: TextStyle(color: AppColors.textColor, fontSize: 24, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 20.0),
                   const Row(
@@ -114,19 +110,15 @@ class HomePage extends ConsumerWidget {
                     children: [
                       const Text(
                         'Berita Terbaru',
-                        style: TextStyle(
-                            color: AppColors.textColor,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w500),
+                        style: TextStyle(color: AppColors.textColor, fontSize: 24, fontWeight: FontWeight.w500),
                       ),
                       TextButton(
-                        onPressed: () async {},
+                        onPressed: () {
+                          context.push('/berita');
+                        },
                         child: const Text(
                           "Selengkapnya",
-                          style: TextStyle(
-                              color: Color(0xFF0088FF),
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal),
+                          style: TextStyle(color: Color(0xFF0088FF), fontSize: 14, fontWeight: FontWeight.normal),
                         ),
                       ),
                     ],
@@ -136,11 +128,19 @@ class HomePage extends ConsumerWidget {
               ),
             ),
             SizedBox(
-              height: 200,
+              height: 250,
               child: berita.maybeWhen(
                 orElse: () {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return ListView.separated(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return const LoadingBeritaItem();
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(width: 10.0);
+                    },
                   );
                 },
                 data: (data) {
@@ -152,7 +152,7 @@ class HomePage extends ConsumerWidget {
                   return ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     scrollDirection: Axis.horizontal,
-                    itemCount: data.length,
+                    itemCount: 3,
                     itemBuilder: (context, index) {
                       return BeritaItem(
                         data: data[index],

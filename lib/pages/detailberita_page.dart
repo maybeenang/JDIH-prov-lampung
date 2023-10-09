@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdih/components/appbar_page.dart';
 import 'package:jdih/constants/api.dart';
-import 'package:jdih/constants/string.dart';
 import 'package:jdih/models/berita.dart';
 import 'package:jdih/providers/berita_controller.dart';
 import 'package:jdih/styles/colors.dart';
+import 'package:shimmer/shimmer.dart';
 
 class DetailBeritaPage extends ConsumerStatefulWidget {
   const DetailBeritaPage({Key? key, required this.params}) : super(key: key);
@@ -21,8 +21,7 @@ class DetailBeritaPageState extends ConsumerState<DetailBeritaPage> {
   Future<Berita> berita() async {
     try {
       final Dio dio = Dio();
-      final Uri uri = Uri.parse(
-          "${EndPoint.beritaBaseUrl}${EndPoint.berita}/${widget.params}");
+      final Uri uri = Uri.parse("${EndPoint.endpointBaseUrl}${EndPoint.beritaEndpoint}/${widget.params}");
       final response = await dio.get(
         uri.toString(),
       );
@@ -49,9 +48,18 @@ class DetailBeritaPageState extends ConsumerState<DetailBeritaPage> {
                 Container(
                   width: double.infinity,
                   height: 200,
-                  child: Image(
-                    image: NetworkImage(snapshot.data!.image!),
+                  child: FadeInImage(
+                    width: double.infinity,
+                    height: 120,
                     fit: BoxFit.cover,
+                    image: NetworkImage(snapshot.data!.image!),
+                    placeholder: const AssetImage('assets/images/berita.png'),
+                    imageErrorBuilder: (context, error, stackTrace) => const Image(
+                      image: AssetImage('assets/images/berita.png'),
+                      width: double.infinity,
+                      height: 120,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Padding(
@@ -70,7 +78,7 @@ class DetailBeritaPageState extends ConsumerState<DetailBeritaPage> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        AppString.convertDate(snapshot.data!.date!),
+                        snapshot.data!.tanggal!,
                         style: const TextStyle(
                           fontSize: 14,
                         ),
@@ -79,7 +87,11 @@ class DetailBeritaPageState extends ConsumerState<DetailBeritaPage> {
                       Text(
                         snapshot.data!.content!,
                         style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w400),
+                          fontSize: 16,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        textAlign: TextAlign.justify,
                       ),
                     ],
                   ),
@@ -91,8 +103,44 @@ class DetailBeritaPageState extends ConsumerState<DetailBeritaPage> {
               child: Text(snapshot.error.toString()),
             );
           }
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[900]!,
+            highlightColor: Colors.grey[600]!,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  color: Colors.black12,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 100,
+                        height: 20,
+                        color: Colors.black12,
+                      ),
+                      const SizedBox(height: 5),
+                      Container(
+                        width: 100,
+                        height: 20,
+                        color: Colors.black12,
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        width: double.infinity,
+                        height: 20,
+                        color: Colors.black12,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           );
         },
       ),

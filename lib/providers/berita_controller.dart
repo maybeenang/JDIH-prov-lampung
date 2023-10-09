@@ -19,18 +19,21 @@ class BeritaController extends _$BeritaController {
     final initialBerita = await AsyncValue.guard<List<Berita>>(
       () async {
         try {
-          final Uri uri = Uri.parse(EndPoint.beritaBaseUrl + EndPoint.berita);
+          final Uri uri = Uri.parse(EndPoint.endpointBaseUrl + EndPoint.beritaEndpoint);
+          print(uri.toString());
           final response = await dio.get(
             uri.toString(),
           );
+          print(response.data);
 
-          final List<Berita> berita =
-              (response.data as List).map((e) => Berita.fromJson(e)).toList();
+          final List<Berita> berita = (response.data as List).map((e) => Berita.fromJson(e)).toList();
 
           return berita;
         } on DioException catch (e) {
+          print("DIo $e");
           return Future.error(e.message ?? 'Terjadi kesalahan');
         } catch (e) {
+          print("error $e");
           return Future.error(e.toString());
         }
       },
@@ -51,13 +54,12 @@ class BeritaController extends _$BeritaController {
     final berita = await AsyncValue.guard<List<Berita>>(
       () async {
         try {
-          final Uri uri = Uri.parse(EndPoint.beritaBaseUrl + EndPoint.berita);
+          final Uri uri = Uri.parse(EndPoint.endpointBaseUrl + EndPoint.beritaEndpoint);
           final response = await dio.get(
             uri.toString(),
           );
 
-          final List<Berita> berita =
-              (response.data as List).map((e) => Berita.fromJson(e)).toList();
+          final List<Berita> berita = (response.data as List).map((e) => Berita.fromJson(e)).toList();
 
           return berita;
         } on DioException catch (e) {
@@ -82,8 +84,7 @@ class BeritaController extends _$BeritaController {
     final berita = await AsyncValue.guard<Berita>(
       () async {
         try {
-          final Uri uri =
-              Uri.parse('${EndPoint.beritaBaseUrl}${EndPoint.berita}/$id');
+          final Uri uri = Uri.parse('${EndPoint.endpointBaseUrl}${EndPoint.beritaEndpoint}/$id');
           final response = await dio.get(
             uri.toString(),
           );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdih/components/appbar_page.dart';
 import 'package:jdih/components/berita_item.dart';
+import 'package:jdih/components/loading/loading_berita_item.dart';
 import 'package:jdih/components/search_box.dart';
 import 'package:jdih/providers/berita_controller.dart';
 
@@ -22,8 +23,17 @@ class BeritaPage extends HookConsumerWidget {
             ),
             berita.maybeWhen(
               orElse: () {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return Expanded(
+                  child: ListView.separated(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return const LoadingBeritaItem();
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 10.0);
+                    },
+                  ),
                 );
               },
               data: (data) {

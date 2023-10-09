@@ -24,24 +24,25 @@ class SearchBox extends StatelessWidget {
                 color: Colors.white,
                 border: Border.all(color: Colors.black26),
               ),
-              child: const Text("Cari Produk Hukum"),
+              child: const Text("Cari Produk Hukum", style: TextStyle(color: Colors.black54)),
             ),
           ),
           IconButton.filled(
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                    const EdgeInsets.all(10.0)),
-                backgroundColor: MaterialStateColor.resolveWith(
-                    (states) => AppColors.textColor),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                  ),
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(10.0)),
+              backgroundColor: MaterialStateColor.resolveWith((states) => AppColors.textColor),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
-              onPressed: () {},
-              icon: const Icon(Icons.search),
-              color: Colors.white),
+            ),
+            onPressed: () {
+              context.push('/produkhukum');
+            },
+            icon: const Icon(Icons.search),
+            color: Colors.white,
+          ),
         ],
       ),
     );
