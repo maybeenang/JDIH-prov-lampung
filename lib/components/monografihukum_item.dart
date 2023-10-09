@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
-
-import '../styles/colors.dart';
+import 'package:go_router/go_router.dart';
+import 'package:jdih/models/monografi.dart';
 
 class MonografiItem extends StatelessWidget {
-  const MonografiItem({super.key});
+  const MonografiItem({super.key, required this.data});
+
+  final Monografi data;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        context.go('/monografihukum/detail', extra: data.url);
+      },
+      child: Container(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black38),
           borderRadius: BorderRadius.circular(10),
-          image: const DecorationImage(
-            image: AssetImage('assets/images/berita.png'),
+          image: DecorationImage(
+            image: NetworkImage(data.image!),
             fit: BoxFit.cover,
           ),
         ),
@@ -23,28 +29,36 @@ class MonografiItem extends StatelessWidget {
             Container(
               height: 70.0,
               width: double.infinity,
-              color: Colors.white,
-              child: const Padding(
-                padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                ),
+                color: Colors.black.withOpacity(0.5),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Pelaksanaan Rapat Koordinasi Pembinaan dan Pengembangan JDIH Provinsi Lampung',
-                        maxLines: 3,
-                        style: TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          color: AppColors.textColor,
-                          fontSize: 14,
-                          height: 0.95,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      )
-                    ]),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      data.title!,
+                      maxLines: 3,
+                      style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }

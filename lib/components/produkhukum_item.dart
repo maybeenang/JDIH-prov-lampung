@@ -13,7 +13,9 @@ class ProdukItem extends StatelessWidget {
     DownloadService downloadService = DownloadService(context: context);
 
     await downloadService.downloadFile(
-        url: data.urlLampiran!, namaFile: data.namaFile!);
+      url: data.urlLampiran!,
+      namaFile: data.namaFile!,
+    );
   }
 
   final ProdukHukum data;
@@ -34,14 +36,10 @@ class ProdukItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              AppString.convertJudul(
-                  data.judul!, data.tahun!, data.no!, data.kategori!.category!),
+              AppString.convertJudul(data.judul!, data.tahun!, data.no!, data.kategori!.category!),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                  color: AppColors.textColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
+              style: const TextStyle(color: AppColors.textColor, fontSize: 14, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 10.0),
             Row(
@@ -54,8 +52,7 @@ class ProdukItem extends StatelessWidget {
                 const SizedBox(width: 5.0),
                 Text(
                   data.tahun!,
-                  style:
-                      const TextStyle(fontSize: 10, color: AppColors.textColor),
+                  style: const TextStyle(fontSize: 10, color: AppColors.textColor),
                 )
               ],
             ),
@@ -69,8 +66,7 @@ class ProdukItem extends StatelessWidget {
                 const SizedBox(width: 5.0),
                 Text(
                   data.kategori!.category!,
-                  style:
-                      const TextStyle(fontSize: 10, color: AppColors.textColor),
+                  style: const TextStyle(fontSize: 10, color: AppColors.textColor),
                 )
               ],
             ),
@@ -79,12 +75,10 @@ class ProdukItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 OutlinedButton(
-                    onPressed: () =>
-                        context.go('/produkhukum/detail', extra: data),
+                    onPressed: () => context.go('/produkhukum/detail', extra: data),
                     style: ButtonStyle(
-                      side: MaterialStateProperty.all<BorderSide>(
-                          const BorderSide(
-                              color: AppColors.textColor, width: 2)),
+                      side:
+                          MaterialStateProperty.all<BorderSide>(const BorderSide(color: AppColors.textColor, width: 2)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4.0),
@@ -102,8 +96,7 @@ class ProdukItem extends StatelessWidget {
                     // print(await getExternalStorageDirectories());
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => AppColors.textColor),
+                    backgroundColor: MaterialStateColor.resolveWith((states) => AppColors.textColor),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4.0),

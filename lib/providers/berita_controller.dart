@@ -20,11 +20,9 @@ class BeritaController extends _$BeritaController {
       () async {
         try {
           final Uri uri = Uri.parse(EndPoint.endpointBaseUrl + EndPoint.beritaEndpoint);
-          print(uri.toString());
           final response = await dio.get(
             uri.toString(),
           );
-          print(response.data);
 
           final List<Berita> berita = (response.data as List).map((e) => Berita.fromJson(e)).toList();
 

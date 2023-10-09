@@ -5,4 +5,6 @@ class EndPoint {
 
   static const String endpointBaseUrl = 'https://apijdih.maybeenang.com/api/v1';
   static const String beritaEndpoint = '/berita';
+  static const String monografiEndpoint = '/monografi';
+  static const String artikelEndpoint = '/artikel';
 }

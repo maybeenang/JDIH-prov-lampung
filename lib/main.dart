@@ -11,6 +11,7 @@ import 'package:jdih/pages/home_page.dart';
 import 'package:jdih/pages/monografihukum_page.dart';
 import 'package:jdih/pages/produkhukum_page.dart';
 import 'package:jdih/pages/putusan_page.dart';
+import 'package:jdih/pages/webview_monografi.dart';
 import 'package:jdih/services/logger.dart';
 import 'package:jdih/styles/colors.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -47,6 +48,16 @@ final GoRouter _router = GoRouter(routes: <RouteBase>[
       GoRoute(
         path: 'monografihukum',
         builder: (context, state) => const MonografiHukumPage(),
+        routes: [
+          GoRoute(
+            path: 'detail',
+            builder: (context, state) {
+              return WebViewMonografi(
+                url: state.extra! as String,
+              );
+            },
+          ),
+        ],
       ),
       GoRoute(
         path: 'putusan',

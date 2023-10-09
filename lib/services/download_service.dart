@@ -29,12 +29,10 @@ class DownloadService {
 
   void showSnackBar(String word, String? label, void Function()? onPressed) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(snackbar(word, label!, onPressed));
+    ScaffoldMessenger.of(context).showSnackBar(snackbar(word, label!, onPressed));
   }
 
-  Future<void> downloadFile(
-      {required String url, required String namaFile}) async {
+  Future<void> downloadFile({required String url, required String namaFile}) async {
     bool _permissionReady = await _checkPermission();
     String _localPath = '/storage/emulated/0/Download/';
 
@@ -67,28 +65,78 @@ class DownloadService {
         name: namaFile,
         onDownloadError: (errorMessage) {
           print(errorMessage);
-          ScaffoldMessenger.of(context)
-              .showSnackBar(snackbar("Gagal mendownload file", "Coba lagi", () {
-            downloadFile(
-                url: AppString.convertDownloadUrl(url), namaFile: namaFile);
+          ScaffoldMessenger.of(context).showSnackBar(snackbar("Gagal mendownload file", "Coba lagi", () {
+            downloadFile(url: AppString.convertDownloadUrl(url), namaFile: namaFile);
           }));
           throw Exception(errorMessage);
         },
         onDownloadCompleted: (path) async {
           print("File Downloaded at $path");
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          ScaffoldMessenger.of(context)
-              .showSnackBar(snackbar("File berhasil didownload", "Buka", () {
+          ScaffoldMessenger.of(context).showSnackBar(snackbar("File berhasil didownload", "Buka", () {
             OpenFile.open(path);
           }));
         },
       );
     } catch (e) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(snackbar("Gagal mendownload file", "Coba lagi", () {
-        downloadFile(
-            url: AppString.convertDownloadUrl(url), namaFile: namaFile);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar("Gagal mendownload file", "Coba lagi", () {
+        downloadFile(url: AppString.convertDownloadUrl(url), namaFile: namaFile);
+      }));
+    }
+  }
+
+  Future<void> downloadFileArtikel({required String url, required String namaFile}) async {
+    bool _permissionReady = await _checkPermission();
+    String _localPath = '/storage/emulated/0/Download/';
+
+    if (!_permissionReady) {
+      await Permission.manageExternalStorage.request();
+      _permissionReady = await _checkPermission();
+      if (!_permissionReady) {
+        showSnackBar("Izinkan akses penyimpanan", "Izinkan", () async {
+          await _checkPermission();
+        });
+        return;
+      }
+    }
+
+    if (!await Directory(_localPath).exists()) {
+      await Directory(_localPath).create(recursive: true);
+    }
+
+    if (File(_localPath + namaFile).existsSync()) {
+      showSnackBar("File sudah ada", "Buka", () {
+        OpenFile.open(_localPath + namaFile);
+      });
+      return;
+    }
+
+    try {
+      showSnackBar("Sedang mendownlad Dokumen", " ", () {});
+      await FileDownloader.downloadFile(
+        url: url,
+        name: namaFile,
+        onDownloadError: (errorMessage) {
+          print(errorMessage);
+          ScaffoldMessenger.of(context).showSnackBar(snackbar("Gagal mendownload file", "Coba lagi", () {
+            downloadFile(url: AppString.convertDownloadUrl(url), namaFile: namaFile);
+          }));
+          throw Exception(errorMessage);
+        },
+        onDownloadCompleted: (path) async {
+          print("File Downloaded at $path");
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(snackbar("File berhasil didownload", "Buka", () {
+            OpenFile.open(path);
+          }));
+        },
+      );
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(snackbar("Gagal mendownload file", "Coba lagi", () {
+        downloadFile(url: AppString.convertDownloadUrl(url), namaFile: namaFile);
       }));
     }
   }
