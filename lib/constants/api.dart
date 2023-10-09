@@ -7,4 +7,5 @@ class EndPoint {
   static const String beritaEndpoint = '/berita';
   static const String monografiEndpoint = '/monografi';
   static const String artikelEndpoint = '/artikel';
+  static const String galeryEndpoint = '/galery';
 }

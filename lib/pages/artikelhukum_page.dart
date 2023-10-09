@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jdih/components/appbar_page.dart';
 import 'package:jdih/components/artikelhukum_item.dart';
+import 'package:jdih/components/loading/loading_artikel_item.dart';
 import 'package:jdih/components/search_box.dart';
 import 'package:jdih/providers/artikel_controller.dart';
 
@@ -46,12 +47,21 @@ class ArtikelHukumPage extends HookConsumerWidget {
               },
               error: (error, stackTrace) {
                 return Center(
-                  child: Text(error.toString()),
+                  child: Text("Error: $error"),
                 );
               },
               loading: () {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  itemBuilder: (context, index) {
+                    return const LoadingArtikelItem();
+                  },
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(height: 20.0);
+                  },
+                  itemCount: 3,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                 );
               },
             ),
