@@ -5,14 +5,11 @@ import 'package:go_router/go_router.dart';
 import '../styles/colors.dart';
 
 class MenuIcon extends StatelessWidget {
-  const MenuIcon(
-      {super.key,
-      required this.iconPath,
-      required this.title,
-      required this.route});
+  const MenuIcon({super.key, required this.iconPath, required this.title, required this.route, this.onTap});
   final String iconPath;
   final String title;
   final String route;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +17,7 @@ class MenuIcon extends StatelessWidget {
       width: 70,
       height: 82,
       child: GestureDetector(
-        onTap: () => context.go('/$route'),
+        onTap: () => onTap != null ? onTap!() : context.go('/$route'),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

@@ -63,15 +63,15 @@ class HomePage extends ConsumerWidget {
                     style: TextStyle(color: AppColors.textColor, fontSize: 24, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 20.0),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      MenuIcon(
+                      const MenuIcon(
                         title: 'Produk Hukum',
                         iconPath: 'assets/svg/ic_produkhukum.svg',
                         route: 'produkhukum',
                       ),
-                      MenuIcon(
+                      const MenuIcon(
                         title: 'Monografi Hukum',
                         iconPath: 'assets/svg/ic_monografihukum.svg',
                         route: 'monografihukum',
@@ -80,6 +80,26 @@ class HomePage extends ConsumerWidget {
                         title: 'Putusan',
                         iconPath: 'assets/svg/ic_putusan.svg',
                         route: 'putusan',
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                backgroundColor: Colors.white,
+                                title: const Text('Peringatan'),
+                                content: const Text('Fitur ini belum tersedia'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('OK'),
+                                  )
+                                ],
+                              );
+                            },
+                          );
+                        },
                       )
                     ],
                   ),
