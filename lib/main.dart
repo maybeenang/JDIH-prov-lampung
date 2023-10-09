@@ -11,6 +11,7 @@ import 'package:jdih/pages/home_page.dart';
 import 'package:jdih/pages/monografihukum_page.dart';
 import 'package:jdih/pages/produkhukum_page.dart';
 import 'package:jdih/pages/putusan_page.dart';
+import 'package:jdih/pages/webview_galery.dart';
 import 'package:jdih/pages/webview_monografi.dart';
 import 'package:jdih/services/logger.dart';
 import 'package:jdih/styles/colors.dart';
@@ -85,6 +86,16 @@ final GoRouter _router = GoRouter(routes: <RouteBase>[
       GoRoute(
         path: 'galeri',
         builder: (context, state) => const GaleriPage(),
+        routes: [
+          GoRoute(
+            path: 'detail',
+            builder: (context, state) {
+              return WebViewGalery(
+                url: state.extra! as String,
+              );
+            },
+          ),
+        ],
       ),
     ],
   )
